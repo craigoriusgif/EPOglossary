@@ -1,2 +1,2 @@
 # EPOglossary
-A glossary for EPO interpreters
+Searches and filters your glossary as-you-type. Glossaries must be uploaded as CSV files.
