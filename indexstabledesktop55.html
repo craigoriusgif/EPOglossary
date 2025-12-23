@@ -120,12 +120,12 @@
     <div id="help-pane" class="side-pane">
         <div class="pane-header"><h2>User Guide</h2><button class="close-pane-btn" onclick="togglePane('help-pane', false)">&times;</button></div>
         <div style="font-size: 14px; line-height: 1.6; overflow-y: auto;">
-            <p><strong>👀 Views:</strong> Switch between EPO Glossary Mode and Today mode. EPO Glossary is a comprehensive terminology reference. Today mode is where you add your vocab list for a specific OP.</p>
+            <p><strong>👀 Views:</strong> Switch between EPO Glossary view and Today view. EPO Glossary is a comprehensive terminology reference. Today is where you add your vocab list for a specific OP.</p>
             <p><strong>🔍 Search:</strong> Filter terms in any language instantly.</p>
             <p><strong>🏷️ Categories:</strong> Click the Categories button to filter by legal or technical field.</p>
             <p><strong>💡 Definitions:</strong> Click rows with a light bulb to see more information or related links.</p>
-            <p><strong>📌 Pinning:</strong> Click terms in Today list to keep terms visible at the top while scrolling.</p>
-            <p><strong>🎴 Flashcards:</strong> Flashcards let you test yourself on your vocab for today's OP (not the EPO Glossary). The button appears once you load today's vocab. Click the card to flip and test yourself. Mark done to remove the card from the deck. Click the Source dropdown to change language.</p>
+            <p><strong>📌 Pinning:</strong> Click terms in Today's vocab list to keep terms visible at the top while scrolling.</p>
+            <p><strong>🎴 Flashcards:</strong> Flashcards help you practise your vocab for today's OP (not the EPO Glossary). The button appears once you load today's vocab. Click the card to flip and test yourself. Mark done to remove the card from the deck. Click the Source dropdown to change language.</p>
             
             <div class="useful-links" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                 <h4>Useful Links</h4>
@@ -141,18 +141,18 @@
     </div>
 
     <div id="landing-help-pane" class="side-pane">
-        <div class="pane-header"><h2>Quick Start Guide</h2><button class="close-pane-btn" onclick="togglePane('landing-help-pane', false)">&times;</button></div>
+        <div class="pane-header"><h2>Getting Started</h2><button class="close-pane-btn" onclick="togglePane('landing-help-pane', false)">&times;</button></div>
         <div style="font-size: 14px; line-height: 1.6;">
-            <p><strong>Welcome to Glossary Pro!</strong> This tool is designed for legal professionals to manage and reference patent terminology across English, German, and French.</p>
+            <p><strong>Welcome to EPO Interpreter Dashboard!</strong> This tool is designed to help EPO interpreters manage and consult terminology for oral proceedings.</p>
             <div style="margin: 15px 0; padding: 15px; border: 1px solid var(--accent-blue); border-radius: 8px; background: rgba(0, 102, 204, 0.05);">
-                <h4 style="margin-top:0;">🚀 Loading your Master Glossary</h4>
+                <h4 style="margin-top:0;">🚀 Loading the EPO Glossary</h4>
                 <ol>
-                    <li>Click the <strong>"Load Master CSV"</strong> button in the center of the screen.</li>
-                    <li>Select a CSV file from your computer.</li>
-                    <li>Ensure your CSV has columns titled: <em>EN, DE, FR, Category,</em> and <em>Definition</em>.</li>
+                    <li>Click the blue <strong>"Load EPO Glossary"</strong> button in the center of the screen.</li>
+                    <li>Select the CSV file from your computer. The Language Service will periodically provide an updated working version called EPO glossary.csv.</li>
+                    <li>If using your own file, ensure your CSV has columns titled: <em>EN, DE, FR, Category,</em> and <em>Definition</em> even if they are blank.</li>
                 </ol>
             </div>
-            <p>Once loaded, you can search thousands of terms instantly and manage specific case terminology in the "Today" pane.</p>
+            <p>Once the file has loaded, you can search thousands of terms instantly. To manage terminology for a specific oral proceedings, switch to the Today's vocab view and add your own glossary in either CSV or Word (.docx) format. Ensure your file has columns titled: <em>EN, DE, FR, Category,</em> and <em>Definition</em> even if they are blank. The Language Service has provided a template.</p>
         </div>
     </div>
 
