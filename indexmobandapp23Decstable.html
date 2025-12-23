@@ -206,7 +206,7 @@
     </div>
 
     <div id="upload-screen" style="max-width: 450px; margin: 10vh auto; padding: 40px; background: #fff; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
-        <h1 style="margin-bottom:30px;">Glossary Pro</h1>
+        <h1 style="margin-bottom:30px;">EPO Interpreter Dashboard</h1>
         <div style="position:relative; margin-bottom: 20px;">
             <button class="btn-ui" style="width:100%; background: var(--accent-blue); color:white; height:50px; font-size:14px;">Load Master CSV</button>
             <input type="file" id="master-file-input" accept=".csv" style="position:absolute; left:0; top:0; opacity:0; width:100%; height:100%; cursor:pointer;">
@@ -223,7 +223,7 @@
             <div class="header-with-logo">
                 <h2 id="main-title" style="margin:0; font-size:18px;">Glossary</h2>
                 <div class="header-center-filters">
-                    <input type="search" id="master-search" placeholder="Search Master..." onsearch="masterList.search(this.value, ['en', 'de', 'fr'])">
+                    <input type="search" id="master-search" placeholder="Tap to search terms..." onsearch="masterList.search(this.value, ['en', 'de', 'fr'])">
                     <div class="header-center-filters-row">
                         <div class="dropdown-container" style="position:relative; flex: 1;">
                             <button class="btn-ui" onclick="toggleDrop('cat-drop', event)" style="width: 100%;">🏷️ Cats <span id="cat-badge-val" class="badge-inline hidden">0</span></button>
