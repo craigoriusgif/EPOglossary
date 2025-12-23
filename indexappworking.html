@@ -148,17 +148,13 @@
     <div id="help-pane" class="side-pane">
         <div class="pane-header"><h2>User Guide</h2><button class="close-pane-btn" onclick="togglePane('help-pane', false)">&times;</button></div>
         <div style="font-size: 14px; line-height: 1.6; overflow-y: auto;">
+            <p><strong>👀 Views:</strong> Switch between EPO Glossary Mode and Today mode. EPO Glossary is a comprehensive terminology reference. Today mode is where you add your vocab list for a specific OP.</p>
             <p><strong>🔍 Search:</strong> Filter terms in any language instantly.</p>
-            <p><strong>🏷️ Categories:</strong> Use the dropdown to filter by field.</p>
-            <p><strong>💡 Definitions:</strong> Click rows with a light bulb to see explanations.</p>
-            <p><strong>📌 Pinning:</strong> Click rows in the "Today" list to keep terms at the top.</p>
-            <div style="margin: 15px 0; padding: 12px; border: 1px solid var(--accent-blue); border-radius: 8px; background: rgba(0, 102, 204, 0.05);">
-                <h4 style="margin-top:0;">🎴 Flashcards Feature</h4>
-                <ul style="padding-left:20px; margin:0;">
-                    <li><strong>Randomized:</strong> Cards are shuffled automatically.</li>
-                    <li><strong>Study Language:</strong> Use the dropdown to set the front language.</li>
-                    <li><strong>Flip:</strong> Click the card body to reveal translations.</li>
-                </ul>
+            <p><strong>🏷️ Categories:</strong> Tap the Categories button to filter by legal or technical field.</p>
+            <p><strong>💡 Definitions:</strong> Tap rows with a light bulb to see more information or related links.</p>
+            <p><strong>📌 Pinning:</strong> Tap terms in Today list to keep terms visible at the top while scrolling.</p>
+            <p><strong>🎴 Flashcards:</strong> Flashcards let you test yourself on your vocab for today's OP (not the EPO Glossary). The button appears once you load today's vocab. Tap the card to flip and test yourself. Mark done to remove the card from the deck. Tap the Source dropdown to change language.</p>
+           
             </div>
             <div class="useful-links" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                 <h4>Useful Links</h4>
@@ -322,7 +318,7 @@
     <div class="pane-controls hidden">
         <button id="btn-split-view" class="toggle-btn" onclick="setLayout('split')">Split View</button>
         <button class="toggle-btn" onclick="setLayout('master')">EPO Glossary</button>
-        <button class="toggle-btn" onclick="setLayout('today')">Today's OP</button>
+        <button class="toggle-btn" onclick="setLayout('today')">Today's vocab</button>
         <button class="toggle-btn" onclick="setLayout('today'); togglePatentInfo();">Patent Info ▴</button>
         <button id="btn-flash-mobile" class="toggle-btn hidden" onclick="setLayout('today'); toggleFlashcards();" style="background: var(--accent-blue); color: white;">🎴 Flashcards</button>
         <span style="color:#666; margin: 0 5px;">|</span>
