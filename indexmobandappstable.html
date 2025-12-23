@@ -170,16 +170,24 @@
     </div>
 
     <div id="landing-help-pane" class="side-pane">
-        <div class="pane-header"><h2>Quick Start Guide</h2><button class="close-pane-btn" onclick="togglePane('landing-help-pane', false)">&times;</button></div>
+        <div class="pane-header"><h2>Getting Started</h2><button class="close-pane-btn" onclick="togglePane('landing-help-pane', false)">&times;</button></div>
         <div style="font-size: 14px; line-height: 1.6;">
-            <p><strong>Welcome to Glossary Pro!</strong> Manage patent terminology across English, German, and French.</p>
+            <p><strong>Welcome to EPO Interpreter Dashboard!</strong> This tool is designed to help EPO interpreters manage and consult terminology for oral proceedings.</p>
             <div style="margin: 15px 0; padding: 15px; border: 1px solid var(--accent-blue); border-radius: 8px; background: rgba(0, 102, 204, 0.05);">
-                <h4 style="margin-top:0;">🚀 Loading your Master Glossary</h4>
+                <h4 style="margin-top:0;">🚀 Loading the EPO Glossary</h4>
                 <ol>
-                    <li>Click <strong>"Load Master CSV"</strong>.</li>
-                    <li>Ensure your CSV has: <em>EN, DE, FR, Category,</em> and <em>Definition</em>.</li>
+                    <li>Tap the blue <strong>Load EPO Glossary</strong> button in the middle of the screen.</li>
+                    <li>Open the CSV file. The Language Service will periodically provide an updated working version called <strong>EPO glossary.csv</strong>.</li>
+                    <li><strong>NB</strong> If using your own file, ensure your CSV has columns titled: <em>EN, DE, FR, Category,</em> and <em>Definition</em> even if they are blank.</li>
+                    <li>Recently used glossary files will be remembered during your session. Tap on a recently used file to re-open it.
                 </ol>
             </div>
+            <p>Once the file has loaded, you can search thousands of terms instantly.
+
+            <p><strong>Oral proceedings</strong>
+            <p>To prepare and consult terminology for a specific oral proceedings, you <strong>must</strong> first load the EPO glossary as described above.
+            <p>Then switch to the <strong>Today's vocab</strong> view and add your own glossary in either CSV or Word (.docx) format.
+            <p>Ensure your file has columns with <em>EN, DE, FR, Category,</em> and <em>Definition</em> in the first row (even if you are not using them). The Language Service has provided a template for you to use.</p>
         </div>
     </div>
 
@@ -795,6 +803,7 @@
     </script>
 </body>
 </html>
+
 
 
 
