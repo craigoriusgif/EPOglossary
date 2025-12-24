@@ -1,10 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Responsive Landing Page</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>EPO Interpreter Dashboard</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./sw.js');
+        });
+      }
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
+    
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+    <style>
+        /* 1. Default Styles (Copy the :root and general styles here) */
+        :root {
+            --primary-bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --today-bg: #2d3436;
+            --today-text: #dfe6e9;
+            --border-color: #e4e6eb;
+            --accent-blue: #0066cc;
+            --accent-green: #28a745;
+            --accent-red: #dc3545;
+            --text-main: #1c1e21;
+        }
+
+        /* 2. Layout Visibility Logic */
+        .mobile-only, .tablet-only, .desktop-only { display: none !important; }
+
+        @media (max-width: 480px) { .mobile-only { display: block !important; } }
+        @media (min-width: 481px) and (max-width: 1024px) { .tablet-only { display: block !important; } }
+        @media (min-width: 1025px) { .desktop-only { display: block !important; } }
+
+        /* PASTE THE REST OF YOUR CSS BELOW THIS LINE */
+        /* ============================================================
+   1. DEVICE DISPLAY LOGIC (The "Switcher")
+   ============================================================ */
+.mobile-only, .tablet-only, .desktop-only { 
+    display: none !important; 
+}
+
+/* Mobile: Phones */
+@media (max-width: 480px) { 
+    .mobile-only { display: block !important; } 
+}
+
+/* Tablet: iPads/Tablets */
+@media (min-width: 481px) and (max-width: 1024px) { 
+    .tablet-only { display: block !important; } 
+}
+
+/* Desktop: Laptops/Monitors */
+@media (min-width: 1025px) { 
+    .desktop-only { display: block !important; } 
+}
+
+/* ============================================================
+   2. SHARED & DESKTOP CORE STYLES 
+   ============================================================ */
+:root {
+    --primary-bg: #f0f2f5;
+    --card-bg: #ffffff;
+    --today-bg: #2d3436;
+    --today-text: #dfe6e9;
+    --border-color: #e4e6eb;
+    --accent-blue: #0066cc;
+    --accent-green: #28a745;
+    --accent-red: #dc3545;
+    --text-main: #1c1e21;
+}
+
+* { box-sizing: border-box; }
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    background-color: var(--primary-bg); 
+    color: var(--text-main); 
+}
+
+/* Dashboard Layout Structure */
+.container { 
+    display: grid; 
+    grid-template-columns: 1fr 380px; 
+    gap: 20px; 
+    padding: 20px; 
+    max-width: 1600px; 
+    margin: 0 auto; 
+}
+
+.card { 
+    background: var(--card-bg); 
+    border-radius: 8px; 
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1); 
+    padding: 20px; 
+    height: fit-content; 
+}
+
+/* Header & Controls */
+.header-flex { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 20px; 
+}
+
+.search-container { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 20px; 
+}
+
+input, select, button { 
+    padding: 8px 12px; 
+    border: 1px solid var(--border-color); 
+    border-radius: 6px; 
+    font-size: 14px; 
+}
+
+button { 
+    cursor: pointer; 
+    background: #fff; 
+    transition: background 0.2s; 
+}
+
+button:hover { background: #f5f6f7; }
+
+.btn-primary { background: var(--accent-blue); color: white; border: none; }
+.btn-primary:hover { background: #0052a3; }
+
+/* Table Styles */
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    font-size: 14px; 
+}
+
+th, td { 
+    padding: 12px; 
+    text-align: left; 
+    border-bottom: 1px solid var(--border-color); 
+}
+
+th { 
+    background: #f8f9fa; 
+    position: sticky; 
+    top: 0; 
+    font-weight: 600; 
+}
+
+tr:hover { background-color: #f8f9fa; }
+
+/* Right Column (Today/History) */
+#today-section { 
+    background: var(--today-bg); 
+    color: var(--today-text); 
+    position: sticky; 
+    top: 20px; 
+    max-height: calc(100vh - 40px); 
+    overflow-y: auto; 
+}
+
+.theme-blue { --today-bg: #004085; }
+.theme-green { --today-bg: #155724; }
+.theme-red { --today-bg: #721c24; }
+
+/* Dropdowns & UI Elements */
+.dropdown { position: relative; display: inline-block; }
+.dropdown-options { 
+    display: none; 
+    position: absolute; 
+    background: white; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+    border-radius: 8px; 
+    z-index: 1000; 
+    min-width: 180px; 
+    margin-top: 5px; 
+}
+
+.dropdown-options div { 
+    padding: 10px 15px; 
+    cursor: pointer; 
+    color: var(--text-main); 
+}
+
+.dropdown-options div:hover { background: #f0f2f5; }
+
+/* Metadata rows for the Desktop layout */
+.meta-row { 
+    display: grid; 
+    grid-template-columns: 120px 1fr 40px; 
+    gap: 10px; 
+    margin-bottom: 8px; 
+}
+    </style>
+</head>
 </head>
 <body>
 
@@ -1783,6 +1988,120 @@
         document.getElementById('today-search').oninput = (e) => todayList.search(e.target.value);
     </script>
         </div>
+<script>
+    // 1. Core State & Lists
+    let masterList, todayList, pinnedList;
+    const historyKey = 'epo_dashboard_history';
 
+    // 2. Initialization (Combined from all versions)
+    window.onload = () => {
+        loadHistory();
+        populateHeaderSelect();
+        
+        // Initial setup for Metadata rows
+        ['pat', 'app', 'tit'].forEach(id => {
+            if(document.getElementById('header-select')) {
+                document.getElementById('header-select').value = id;
+                addMetaRow();
+            }
+        });
+
+        // Initialize List.js (Make sure these IDs exist in your HTML)
+        masterList = new List('main-section', { valueNames: ['en', 'de', 'fr', 'cat'] });
+        todayList = new List('today-list-container', { valueNames: ['en', 'de', 'fr'] });
+        
+        // Service Worker registration (Tablet/Mobile PWA)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(() => {});
+        }
+    };
+
+    // 3. File Processing (CSV & DOCX)
+    function handleFile(file) {
+        const reader = new FileReader();
+        if (file.name.endsWith('.docx')) {
+            reader.onload = e => {
+                mammoth.convertToHtml({arrayBuffer: e.target.result})
+                    .then(result => processDocx(result.value));
+            };
+            reader.readAsArrayBuffer(file);
+        } else {
+            reader.onload = e => processCSV(e.target.result);
+            reader.readAsText(file);
+        }
+    }
+
+    function processCSV(csv) {
+        const results = Papa.parse(csv, { header: true, skipEmptyLines: true });
+        masterList.clear();
+        masterList.add(results.data);
+        saveToHistory(results.data);
+    }
+
+    // 4. "Today" List Management
+    function addToToday(en, de, fr) {
+        todayList.add({ en, de, fr });
+        // Tablet/Desktop specific: Show flashcard if it exists
+        if(typeof nextFlashcard === "function") nextFlashcard();
+    }
+
+    function downloadToday() {
+        if (!todayList || todayList.items.length === 0) return;
+        const csv = Papa.unparse(todayList.items.map(i => i.values()));
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'today_glossary.csv';
+        a.click();
+    }
+
+    // 5. UI Helpers (Dropdowns, Themes, Toggles)
+    function toggleDrop(id, e) {
+        if(e) e.stopPropagation();
+        const el = document.getElementById(id);
+        const isVis = el.style.display === 'block';
+        document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none');
+        if(el) el.style.display = isVis ? 'none' : 'block';
+    }
+
+    function setTheme(t) {
+        const section = document.getElementById('today-section');
+        if(section) section.className = 'theme-' + t;
+    }
+
+    function toggleSplitView() {
+        const today = document.getElementById('today-section');
+        const main = document.getElementById('main-section');
+        today.classList.toggle('hidden');
+        main.classList.toggle('full-width');
+    }
+
+    // 6. Mobile Export (PDF/DOCX) - Only runs if libraries are present
+    async function exportToday(format) {
+        const items = todayList.items.map(i => i.values());
+        const fileName = "Glossary_Export";
+        
+        if (format === 'pdf' && window.jspdf) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Vocabulary List", 14, 15);
+            doc.autoTable({
+                head: [['English', 'German', 'French']],
+                body: items.map(i => [i.en, i.de, i.fr]),
+                startY: 25
+            });
+            doc.save(`${fileName}.pdf`);
+        }
+    }
+
+    // 7. Global Listeners
+    document.onclick = () => document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none');
+    
+    if(document.getElementById('master-search')) {
+        document.getElementById('master-search').oninput = (e) => 
+            masterList.search(e.target.value, ['en', 'de', 'fr']);
+    }
+</script>
 </body>
 </html>
