@@ -7,12 +7,13 @@
         body { 
             font-family: sans-serif; 
             display: flex; 
-            align-items: center; /* Vertical centering */
-            justify-content: center; /* Horizontal centering */
+            /* Align to the top so we can manually set the offset */
+            align-items: flex-start; 
+            justify-content: center; 
             height: 100vh; 
             background: #f0f2f5; 
             margin: 0; 
-            overflow: hidden; /* Prevents unwanted scrolling */
+            overflow: hidden; 
         }
         .choice-card { 
             background: white; 
@@ -20,8 +21,10 @@
             border-radius: 12px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.1); 
             text-align: center; 
-            display: none; /* Controlled by JS */
-            max-width: 90%; /* Responsive width for smaller tablets */
+            display: none; /* Controlled by JS route function */
+            max-width: 90%;
+            /* This moves the box to start 1/3rd down the page */
+            margin-top: 33vh; 
         }
         h1 { color: #1c1e21; margin-bottom: 10px; }
         .options { 
@@ -29,7 +32,7 @@
             gap: 20px; 
             margin-top: 30px; 
             justify-content: center; 
-            flex-wrap: wrap; /* Allows buttons to stack on very narrow screens */
+            flex-wrap: wrap; 
         }
         .btn { 
             padding: 20px 30px; 
@@ -61,7 +64,7 @@
                 window.location.replace("indexmobandapp25Decstable.html");
             } 
             else if (isIPad || isAndroidTablet || (width > 480 && width <= 1280)) {
-                // Show the centered choice screen
+                // Display the box positioned at the 1/3rd mark
                 document.getElementById('choice-screen').style.display = 'block';
             } 
             else {
