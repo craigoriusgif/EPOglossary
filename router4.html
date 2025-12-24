@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Your View</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f0f2f5; margin: 0; }
+        .choice-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; display: none; }
+        h1 { color: #1c1e21; margin-bottom: 10px; }
+        .options { display: flex; gap: 20px; margin-top: 30px; }
+        .btn { padding: 20px 30px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; transition: transform 0.2s; }
+        .btn-tablet { background: #0066cc; color: white; }
+        .btn-desktop { background: #eeeeee; color: #333; }
+        .btn:hover { transform: translateY(-3px); }
+    </style>
+
+    <script>
+        function route() {
+            var width = window.innerWidth;
+            var ua = navigator.userAgent;
+
+            // 1. Identify iPad (Reports as Macintosh but has touch) 
+            var isIPad = /Macintosh/i.test(ua) && navigator.maxTouchPoints > 1;
+
+            // 2. Identify Android Tablet (Contains Android but NOT Mobile) 
+            var isAndroidTablet = /Android/i.test(ua) && !/Mobile/i.test(ua);
+
+            // 3. Routing Logic
+            // Small screens go straight to mobile [cite: 75]
+            if (width <= 480) {
+                window.location.replace("indexmobandapp25Decstable.html");
+            } 
+            // Tablets (iPad, Android, or medium width) show choice screen 
+            else if (isIPad || isAndroidTablet || (width > 480 && width <= 1280)) {
+                document.getElementById('choice-screen').style.display = 'block';
+            } 
+            // Large screens go to desktop [cite: 235]
+            else {
+                window.location.replace("indexdesk25Decstablepinright.html");
+            }
+        }
+
+        function goTo(file) {
+            window.location.replace(file);
+        }
+    </script>
+</head>
+<body onload="route()">
+
+    <div id="choice-screen" class="choice-card">
+        <h1>EPOS</h1>
+        <p>Choose the layout best suited to your device</p>
+        <div class="options">
+            <button class="btn btn-tablet" onclick="goTo('indextabstableDec25.html')">
+                Tablet mode optimised for touch
+            </button>
+            <button class="btn btn-desktop" onclick="goTo('indexdesk25Decstablepinright.html')">
+                Desktop mode including split-screen view
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>
