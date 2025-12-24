@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Your View</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; background: #f0f2f5; margin: 0; }
+        .choice-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; display: none; }
+        h1 { color: #1c1e21; margin-bottom: 10px; }
+        .options { display: flex; gap: 20px; margin-top: 30px; }
+        .btn { padding: 20px 30px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; font-size: 16px; transition: transform 0.2s; }
+        .btn-tablet { background: #0066cc; color: white; }
+        .btn-desktop { background: #eeeeee; color: #333; }
+        .btn:hover { transform: translateY(-3px); }
+    </style>
+
+    <script>
+        function route() {
+            var width = window.innerWidth;
+            var isIPad = /Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1;
+
+            // 1. If it's a phone, go straight to mobile
+            if (width <= 480) {
+                window.location.replace("indexmobandapp25Decstable.html");
+            } 
+            // 2. If it's a tablet or iPad Pro, show the choice screen
+            else if (width <= 1024 || isIPad) {
+                document.getElementById('choice-screen').style.display = 'block';
+            } 
+            // 3. Otherwise, it's a real desktop
+            else {
+                window.location.replace("indexdesk25Decstablepinright.html");
+            }
+        }
+
+        function goTo(file) {
+            window.location.replace(file);
+        }
+    </script>
+</head>
+<body onload="route()">
+
+    <div id="choice-screen" class="choice-card">
+        <h1>Dashboard View</h1>
+        <p>Choose the layout that works best for your current setup:</p>
+        <div class="options">
+            <button class="btn btn-tablet" onclick="goTo('indextabstableDec25.html')">
+                Optimized Tablet View
+            </button>
+            <button class="btn btn-desktop" onclick="goTo('indexdesk25Decstablepinright.html')">
+                Full Desktop View
+            </button>
+        </div>
+    </div>
+
+</body>
+</html>
