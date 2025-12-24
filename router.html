@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading...</title>
+    <script type="text/javascript">
+        function redirect() {
+            var width = window.innerWidth;
+
+            if (width <= 480) {
+                // Mobile phones
+                window.location.replace("mobile.html");
+            } else if (width > 480 && width <= 1024) {
+                // Tablets
+                window.location.replace("tablet.html");
+            } else {
+                // Desktop and laptops
+                window.location.replace("desktop.html");
+            }
+        }
+
+        // Run the function immediately
+        redirect();
+    </script>
+</head>
+<body>
+    <p>Redirecting to the best version for your device... 
+       If nothing happens, <a href="desktop.html">click here</a>.</p>
+</body>
+</html>
