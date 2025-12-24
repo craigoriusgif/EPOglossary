@@ -7,7 +7,6 @@
         body { 
             font-family: sans-serif; 
             display: flex; 
-            /* Align to the top so we can manually set the offset */
             align-items: flex-start; 
             justify-content: center; 
             height: 100vh; 
@@ -23,10 +22,25 @@
             text-align: center; 
             display: none; /* Controlled by JS route function */
             max-width: 90%;
-            /* This moves the box to start 1/3rd down the page */
-            margin-top: 33vh; 
+            margin-top: 20vh; /* Positioned higher up the page */
         }
-        h1 { color: #1c1e21; margin-bottom: 10px; }
+
+        /* Logo and Title Container */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px; /* Space between logo and text */
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            height: 50px; /* Adjust size as needed */
+            width: auto;
+        }
+
+        h1 { color: #1c1e21; margin: 0; }
+        
         .options { 
             display: flex; 
             gap: 20px; 
@@ -64,7 +78,6 @@
                 window.location.replace("indexmobandapp25Decstable.html");
             } 
             else if (isIPad || isAndroidTablet || (width > 480 && width <= 1280)) {
-                // Display the box positioned at the 1/3rd mark
                 document.getElementById('choice-screen').style.display = 'block';
             } 
             else {
@@ -80,8 +93,13 @@
 <body onload="route()">
 
     <div id="choice-screen" class="choice-card">
-        <h1>EPOS</h1>
+        <div class="header-container">
+            <img src="logo.jpg" alt="Logo" class="logo">
+            <h1>EPOS</h1>
+        </div>
+        
         <p>Choose the layout best suited to your device</p>
+        
         <div class="options">
             <button class="btn btn-tablet" onclick="goTo('indextabstableDec25.html')">
                 Tablet mode optimised for touch
