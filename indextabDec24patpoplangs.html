@@ -51,8 +51,7 @@
             left: 0; top: 0; bottom: 0; 
             width: 380px; background: white; z-index: 2000; 
             box-shadow: 5px 0 15px rgba(0,0,0,0.15); 
-            transform: translateX(-100%);
-            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%); transition: transform 0.3s ease-in-out;
             padding: 25px; display: flex; flex-direction: column;
             border-right: 1px solid var(--border-color);
             color: var(--text-main);
@@ -65,8 +64,7 @@
         .header-center-filters { display: flex; flex-grow: 1; gap: 6px; align-items: center; min-width: 0; }
         
         input[type="search"]::-webkit-search-cancel-button {
-            -webkit-appearance: none;
-            height: 16px; width: 16px;
+            -webkit-appearance: none; height: 16px; width: 16px;
             background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23999'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
             cursor: pointer;
         }
@@ -135,45 +133,47 @@
     <div id="help-pane" class="side-pane">
         <div class="pane-header"><h2>Help</h2><button class="close-pane-btn" onclick="togglePane('help-pane', false)">&times;</button></div>
         <div style="font-size: 14px; line-height: 1.6; overflow-y: auto;">
-             [cite_start]<p><strong>👀 Views:</strong> Switch between <strong>EPO Glossary</strong> view and <strong>Today</strong> view. [cite: 76] <strong>EPO Glossary</strong> is a comprehensive terminology reference. [cite_start]Access the Guidelines, Case Law and EPC via the buttons at the bottom of the screen. [cite: 77] <strong>Today's vocab</strong> is where you add your vocab list for a specific OP.</p>
+             <p><strong>👀 Views:</strong> Switch between <strong>EPO Glossary</strong> view and <strong>Today</strong> view. <strong>EPO Glossary</strong> is a comprehensive terminology reference. Access the Guidelines, Case Law and EPC via the buttons at the bottom of the screen. <strong>Today's vocab</strong> is where you add your vocab list for a specific OP.</p>
             <p><strong>🔍 Search:</strong> Filter terms in any language instantly.</p>
             <p><strong>🏷️ Categories:</strong> Tap the <strong>Categories</strong> button to filter by legal or technical field.</p>
             <p><strong>▥ Columns:</strong> Tap the <strong>Columns</strong> button to show/hide languages or categories.</p>
-            [cite_start]<p><strong>💡 Definitions:</strong> Tap rows with a <strong>light bulb</strong> to see more [cite: 78] information or related links.</p>
-            [cite_start]<p><strong>📥 Download:</strong> Downloads the filtered <strong>EPO Glossary</strong> terminology only, e.g. [cite: 79] <strong>Chemicals</strong> category, <strong>Appeal</strong> category or terms matching <strong>acid</strong>.</p>
+            <p><strong>💡 Definitions:</strong> Tap rows with a <strong>light bulb</strong> to see more information or related links.</p>
+            <p><strong>📥 Download:</strong> Downloads the filtered <strong>EPO Glossary</strong> terminology only, e.g. <strong>Chemicals</strong> category, <strong>Appeal</strong> category or terms matching <strong>acid</strong>.</p>
             <p><strong>📥 Export:</strong> Exports the <strong>Today's vocab</strong> terminology including any new terms you add during the OP.</strong></p>
             <p><strong>📌 Pinning:</strong> Tap terms in <strong>Today's vocab</strong> list to keep terms visible at the top while scrolling.</p>
-            [cite_start]<p><strong>🎴 Flashcards:</strong> Flashcards help you practise your vocab for today's OP (not the EPO Glossary). [cite: 80] The button appears once you load today's vocab. [cite_start]Tap the card to flip and test yourself. [cite: 81] Mark done to remove the card from the deck. Tap the Source dropdown to change language.</p>
+            <p><strong>🎴 Flashcards:</strong> Flashcards help you practise your vocab for today's OP (not the EPO Glossary). The button appears once you load today's vocab. Tap the card to flip and test yourself. Mark done to remove the card from the deck. Tap the Source dropdown to change language.</p>
            
             <div class="useful-links" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                 <h4>Useful Links</h4>
                 <a href="https://register.epo.org/" target="_blank">EPO Patent Register</a>
-                [cite_start][cite: 82] <a href="https://worldwide.espacenet.com/" target="_blank">Espacenet</a>
+                <a href="https://worldwide.espacenet.com/" target="_blank">Espacenet</a>
                 <a href="https://notebooklm.google.com/" target="_blank">Google NotebookLM</a>
                 <a href="https://www.deepl.com/" target="_blank">DeepL</a>
                 <a href="https://claude.ai/" target="_blank">Claude AI</a>
                 <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a>
-                
-[cite_start][cite: 83]     </div>
+            </div>
         </div>
     </div>
 
     <div id="landing-help-pane" class="side-pane">
         <div class="pane-header"><h2>Getting Started</h2><button class="close-pane-btn" onclick="togglePane('landing-help-pane', false)">&times;</button></div>
-        [cite_start]<div style="font-size: 14px; [cite: 84] line-height: 1.6; overflow-y: auto;">
+        <div style="font-size: 14px; line-height: 1.6; overflow-y: auto;">
             <p><strong>Welcome to EPO Interpreter Dashboard!</strong> This tool is designed to help EPO interpreters manage and consult terminology for oral proceedings.</p>
-            [cite_start]<div style="margin: 15px 0; [cite: 85] padding: 15px; border: 1px solid var(--accent-blue); border-radius: 8px; background: rgba(0, 102, 204, 0.05);">
+            <div style="margin: 15px 0; padding: 15px; border: 1px solid var(--accent-blue); border-radius: 8px; background: rgba(0, 102, 204, 0.05);">
                 <h4 style="margin-top:0;">🚀 Loading the EPO Glossary</h4>
                 <ol>
                     <li>Tap the blue <strong>Load EPO Glossary</strong> button in the middle of the screen.</li>
-                   [cite_start][cite: 86]  <li>Open the CSV file. The Language Service will periodically provide an updated working version called <strong>EPO glossary.csv</strong>.</li>
+                    <li>Open the CSV file. The Language Service will periodically provide an updated working version called <strong>EPO glossary.csv</strong>.</li>
                     <li><strong>NB</strong> If using your own file, ensure your CSV has columns titled: <em>EN, DE, FR, Category,</em> and <em>Definition</em> even if they are blank.</li>
-                    <li>Recently used glossary files will be remembered during your session. [cite_start]Tap on a recently used file to re-open it. [cite: 87]              </ol>
+                    <li>Recently used glossary files will be remembered during your session. Tap on a recently used file to re-open it.</li>
+                </ol>
             </div>
-            <p>Once the file has loaded, you can search thousands of terms instantly.
-
-            <p><strong>Oral proceedings</strong>
-            [cite_start]<p>To prepare and consult terminology for a specific oral proceedings, you <strong>must</strong> first load the EPO glossary as described above. [cite: 88] [cite_start]<p>Then switch to the <strong>Today's vocab</strong> view and add your own glossary in either CSV or Word (.docx) format. [cite: 89] [cite_start]<p>Ensure your file has columns with <em>EN, DE, FR, Category,</em> and <em>Definition</em> in the first row (even if you are not using them). [cite: 90] The Language Service has provided a template for you to use.</p>
+            <p>Once the file has loaded, you can search thousands of terms instantly.</p>
+            <p><strong>Oral proceedings</strong></p>
+            <p>To prepare and consult terminology for a specific oral proceedings, you <strong>must</strong> first load the EPO glossary as described above.</p>
+            <p>Then switch to the <strong>Today's vocab</strong> view and add your own glossary in either CSV or Word (.docx) format.</p>
+            <p>Ensure your file has columns with <em>EN, DE, FR, Category,</em> and <em>Definition</em> in the first row (even if you are not using them).</p>
+            <p>The Language Service has provided a template for you to use.</p>
         </div>
     </div>
 
@@ -182,20 +182,20 @@
         <div id="details-content">
             <div style="margin-bottom:20px;"><h4>Definition</h4><p id="det-def" style="font-style: italic; color: #555;">-</p></div>
             <div style="margin-bottom:20px;"><h4>German (DE)</h4><p id="det-de">-</p></div>
-            [cite_start]<div style="margin-bottom:20px;"><h4>French (FR)</h4><p [cite: 91] id="det-fr">-</p></div>
+            <div style="margin-bottom:20px;"><h4>French (FR)</h4><p id="det-fr">-</p></div>
             <div style="margin-bottom:20px;"><h4>Category</h4><p id="det-cat">-</p></div>
         </div>
     </div>
 
     <div id="upload-screen" style="max-width: 450px; margin: 10vh auto; padding: 40px; background: #fff; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
         <h1 style="margin-bottom:30px;">EPO Interpreter Dashboard</h1>
-        [cite_start]<div style="position:relative; [cite: 92] margin-bottom: 20px;">
-            [cite_start]<button class="btn-ui" style="width:100%; background: var(--accent-blue); color:white; height:50px; [cite: 93] font-size:14px;">Load EPO Glossary</button>
-            [cite_start]<input type="file" id="master-file-input" accept=".csv" style="position:absolute; left:0; [cite: 94] top:0; opacity:0; width:100%; height:100%; cursor:pointer;">
+        <div style="position:relative; margin-bottom: 20px;">
+            <button class="btn-ui" style="width:100%; background: var(--accent-blue); color:white; height:50px; font-size:14px;">Load EPO Glossary</button>
+            <input type="file" id="master-file-input" accept=".csv" style="position:absolute; left:0; top:0; opacity:0; width:100%; height:100%; cursor:pointer;">
         </div>
-        [cite_start]<button class="btn-ui" style="width:100%; [cite: 95] margin-bottom:20px; border: 1px solid var(--accent-blue); color: var(--accent-blue);" onclick="togglePane('landing-help-pane', true)">❓ Get started</button>
+        <button class="btn-ui" style="width:100%; margin-bottom:20px; border: 1px solid var(--accent-blue); color: var(--accent-blue);" onclick="togglePane('landing-help-pane', true)">❓ Get started</button>
         <div id="recent-container" class="recent-list hidden">
-            [cite_start]<h4 style="margin-bottom: 10px; [cite: 96] color: #666; border-bottom: 1px solid #eee; padding-bottom: 5px;">Recently Used</h4>
+            <h4 style="margin-bottom: 10px; color: #666; border-bottom: 1px solid #eee; padding-bottom: 5px;">Recently Used</h4>
             <div id="recent-items"></div>
         </div>
     </div>
@@ -203,111 +203,109 @@
     <div id="app-wrapper" class="hidden">
         <section id="main-section">
             <div class="header-with-logo">
-                [cite_start]<h2 id="main-title" style="margin:0; [cite: 97] font-size:18px;">Glossary</h2>
+                <h2 id="main-title" style="margin:0; font-size:18px;">Glossary</h2>
                 <div class="header-center-filters">
                     <input type="search" id="master-search" placeholder="Tap here and start typing to search..." style="flex:2;" onsearch="masterList.search(this.value, ['en', 'de', 'fr'])">
                     <div class="dropdown-container" style="position:relative;">
-                        [cite_start]<button class="btn-ui" onclick="toggleDrop('cat-drop', [cite: 98] [cite_start]event)">🏷️ Categories <span id="cat-badge-val" class="badge-inline hidden">0</span> <span id="cat-reset-btn" class="hidden" style="color:var(--accent-red); margin-left:8px; font-weight:bold; cursor:pointer;" onclick="event.stopPropagation(); [cite: 99] resetCategories()">Reset ×</span></button>
-                        [cite_start]<div id="cat-drop" class="dropdown-options" style="position: absolute; [cite: 100] [cite_start]top: 45px; background: white; border: 1px solid #d1d5db; z-index: 1000; max-height: 350px; width: 220px; overflow-y: auto; border-radius: 10px; [cite: 101] box-shadow: 0 10px 15px rgba(0,0,0,0.1); display: none; padding: 10px;">
+                        <button class="btn-ui" onclick="toggleDrop('cat-drop', event)">🏷️ Categories <span id="cat-badge-val" class="badge-inline hidden">0</span> <span id="cat-reset-btn" class="hidden" style="color:var(--accent-red); margin-left:8px; font-weight:bold; cursor:pointer;" onclick="event.stopPropagation(); resetCategories()">Reset ×</span></button>
+                        <div id="cat-drop" class="dropdown-options" style="position: absolute; top: 45px; background: white; border: 1px solid #d1d5db; z-index: 1000; max-height: 350px; width: 220px; overflow-y: auto; border-radius: 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); display: none; padding: 10px;">
                             <div id="master-cat-list"></div>
                         </div>
                     </div>
-                   [cite_start][cite: 102]  <div class="dropdown-container" style="position:relative;">
+                    <div class="dropdown-container" style="position:relative;">
                         <button class="btn-ui" onclick="toggleDrop('col-drop', event)">▥ Columns</button>
-                        [cite_start]<div id="col-drop" class="dropdown-options" style="position: absolute; [cite: 103] [cite_start]top: 45px; background: white; border: 1px solid #d1d5db; z-index: 1000; max-height: 350px; width: 220px; overflow-y: auto; border-radius: 10px; [cite: 104] box-shadow: 0 10px 15px rgba(0,0,0,0.1); display: none; padding: 10px;">
-                            [cite_start]<label style="display:block; [cite: 105] margin-bottom:8px;"><input type="checkbox" checked onchange="toggleCol('en', this.checked)"> English</label>
-                            [cite_start]<label style="display:block; [cite: 106] margin-bottom:8px;"><input type="checkbox" checked onchange="toggleCol('de', this.checked)"> German</label> 
-                            [cite_start]<label style="display:block; [cite: 107] margin-bottom:8px;"><input type="checkbox" checked onchange="toggleCol('fr', this.checked)"> French</label> 
+                        <div id="col-drop" class="dropdown-options" style="position: absolute; top: 45px; background: white; border: 1px solid #d1d5db; z-index: 1000; max-height: 350px; width: 220px; overflow-y: auto; border-radius: 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); display: none; padding: 10px;">
+                            <label style="display:block; margin-bottom:8px;"><input type="checkbox" checked onchange="toggleCol('en', this.checked)"> English</label>
+                            <label style="display:block; margin-bottom:8px;"><input type="checkbox" checked onchange="toggleCol('de', this.checked)"> German</label> 
+                            <label style="display:block; margin-bottom:8px;"><input type="checkbox" checked onchange="toggleCol('fr', this.checked)"> French</label> 
                             <label style="display:block;"><input type="checkbox" checked onchange="toggleCol('cat', this.checked)"> Category</label> 
                         </div> 
                     </div> 
-             
-[cite_start][cite: 108]        <button class="btn-ui" onclick="location.reload()">🔄 Load New</button> 
+                    <button class="btn-ui" onclick="location.reload()">🔄 Load New</button> 
                     <button class="btn-ui btn-download" onclick="downloadMaster()">📥 Download</button> 
                     <button class="btn-ui" onclick="togglePane('help-pane', true)">❓ Help</button> 
                 </div> 
             </div> 
-        
-[cite_start][cite: 109]     <div id="main-scroll-area" style="flex-grow:1; overflow-y:auto;"> 
+
+            <div id="main-scroll-area" style="flex-grow:1; overflow-y:auto;"> 
                 <div id="main-list"> 
                     <table class="list-table"> 
                         <thead><tr><th class="col-en">English</th><th class="col-de">German</th><th class="col-fr">French</th><th class="col-cat">Category</th></tr></thead> 
-                       [cite_start][cite: 110]  <tbody class="list"></tbody> 
+                        <tbody class="list"></tbody> 
                     </table> 
                 </div> 
-                [cite_start]<div id="legal-iframe-container" class="hidden" style="height:100%"><iframe id="legal-frame" style="width:100%; [cite: 111] height:100%; border:none;" referrerpolicy="no-referrer"></iframe></div> 
+                <div id="legal-iframe-container" class="hidden" style="height:100%"><iframe id="legal-frame" style="width:100%; height:100%; border:none;" referrerpolicy="no-referrer"></iframe></div> 
             </div> 
         </section> 
         
         <section id="today-section" class="theme-dark"> 
             <div id="patent-info-wrapper"> 
-                [cite_start]<div style="display:flex; [cite: 112] gap:5px; margin-bottom:10px;"> 
-                    [cite_start]<select id="header-select" style="height:30px; [cite: 113] font-size:11px; flex:1; background:rgba(0,0,0,0.3); color:inherit; border:1px solid #666; border-radius:4px;"></select> 
-                    [cite_start]<button onclick="addMetaRow()" class="btn-ui" style="height:30px; [cite: 114] width:30px; padding:0; background:rgba(255,255,255,0.1); color:inherit;">+</button> 
-                    [cite_start]<div style="display:flex; [cite: 115] border:1px solid #555; border-radius:4px; overflow:hidden;"> 
-                        [cite_start]<button class="lang-toggle-btn active" id="btn-meta-en" onclick="setMetaLang('en')" style="padding:0 8px; [cite: 116] font-size:10px; cursor:pointer;">EN</button> 
-                        [cite_start]<button class="lang-toggle-btn" id="btn-meta-de" onclick="setMetaLang('de')" style="padding:0 8px; [cite: 117] font-size:10px; cursor:pointer;">DE</button> 
-                        [cite_start]<button class="lang-toggle-btn" id="btn-meta-fr" onclick="setMetaLang('fr')" style="padding:0 8px; [cite: 118] font-size:10px; cursor:pointer;">FR</button> 
+                <div style="display:flex; gap:5px; margin-bottom:10px;"> 
+                    <select id="header-select" style="height:30px; font-size:11px; flex:1; background:rgba(0,0,0,0.3); color:inherit; border:1px solid #666; border-radius:4px;"></select> 
+                    <button onclick="addMetaRow()" class="btn-ui" style="height:30px; width:30px; padding:0; background:rgba(255,255,255,0.1); color:inherit;">+</button> 
+                    <div style="display:flex; border:1px solid #555; border-radius:4px; overflow:hidden;"> 
+                        <button class="lang-toggle-btn active" onclick="setMetaLang('en')" style="padding:0 8px; font-size:10px; cursor:pointer;">EN</button> 
+                        <button class="lang-toggle-btn" onclick="setMetaLang('de')" style="padding:0 8px; font-size:10px; cursor:pointer;">DE</button> 
+                        <button class="lang-toggle-btn" onclick="setMetaLang('fr')" style="padding:0 8px; font-size:10px; cursor:pointer;">FR</button> 
                     </div> 
-                    [cite_start]<button onclick="togglePatentInfo()" class="btn-ui" style="height:30px; [cite: 119] font-size:10px; padding:0 8px; background:rgba(255,255,255,0.1); color:inherit;">Hide ▴</button> 
+                    <button onclick="togglePatentInfo()" class="btn-ui" style="height:30px; font-size:10px; padding:0 8px; background:rgba(255,255,255,0.1); color:inherit;">Hide ▴</button> 
                 </div> 
                 <div id="patent-table-content" class="today-header-container"> 
                     <table class="patent-info-table" id="meta-table-body"></table> 
                 </div> 
             </div> 
 
-     
-[cite_start][cite: 120]        <div id="flashcard-ui" class="hidden">
-                [cite_start]<div style="display:flex; [cite: 121] justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    [cite_start]<div style="display:flex; [cite: 122] align-items:center; gap:5px;">
-                        [cite_start]<span style="font-size:12px; [cite: 123] font-weight:bold;">Study:</span>
+            <div id="flashcard-ui" class="hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <span style="font-size:12px; font-weight:bold;">Study:</span>
                         <select id="flash-source-lang" class="flash-lang-sel" onchange="resetFlashcards()">
                             <option value="en" selected>EN</option>
                             <option value="de">DE</option>
-              [cite_start][cite: 124]               <option value="fr">FR</option>
+                            <option value="fr">FR</option>
                         </select>
-                        [cite_start]<span id="flash-count" style="font-size:10px; [cite: 125] margin-left:8px; opacity:0.7;"></span>
+                        <span id="flash-count" style="font-size:10px; margin-left:8px; opacity:0.7;"></span>
                     </div>
-                    [cite_start]<button onclick="toggleFlashcards()" class="btn-ui" style="height:25px; [cite: 126] padding:0 10px; font-size:10px; background:rgba(255,255,255,0.1); color:inherit;">Close ×</button>
+                    <button onclick="toggleFlashcards()" class="btn-ui" style="height:25px; padding:0 10px; font-size:10px; background:rgba(255,255,255,0.1); color:inherit;">Close ×</button>
                 </div>
                 <div id="flashcard-container" onclick="flipFlashcard()">
                     <div id="flashcard-lang">---</div>
                     <div id="flashcard-content">No terms loaded</div>
-                 [cite_start][cite: 127]    <div style="position:absolute; bottom:10px; left:0; right:0; font-size:10px; opacity:0.5;">Click to Flip</div>
+                    <div style="position:absolute; bottom:10px; left:0; right:0; font-size:10px; opacity:0.5;">Click to Flip</div>
                 </div>
-                [cite_start]<div style="display:flex; [cite: 128] gap:10px;">
-                    [cite_start]<button onclick="prevFlashcard()" class="btn-ui" style="flex:1; [cite: 129] background:rgba(255,255,255,0.1); color:inherit;">Previous</button>
-                    [cite_start]<button onclick="markFlashcardDone()" class="btn-ui" style="flex:1.5; [cite: 130] background:var(--accent-green); color:white; border:none;">Mark Done ✅</button>
-                    [cite_start]<button onclick="nextFlashcard()" class="btn-ui" style="flex:1; [cite: 131] background:var(--accent-blue); color:white; border:none;">Next</button>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="prevFlashcard()" class="btn-ui" style="flex:1; background:rgba(255,255,255,0.1); color:inherit;">Previous</button>
+                    <button onclick="markFlashcardDone()" class="btn-ui" style="flex:1.5; background:var(--accent-green); color:white; border:none;">Mark Done ✅</button>
+                    <button onclick="nextFlashcard()" class="btn-ui" style="flex:1; background:var(--accent-blue); color:white; border:none;">Next</button>
                 </div>
             </div>
 
-            [cite_start]<div id="patent-hidden-indicator" class="hidden" style="text-align:center; [cite: 132] [cite_start]margin-bottom:10px;"> <button onclick="togglePatentInfo()" style="background:none; border:1px solid rgba(128,128,128,0.5); color:inherit; font-size:10px; padding:2px 10px; border-radius:4px; [cite: 133] cursor:pointer;">Show Patent Info ▾</button> </div> 
-            [cite_start]<div id="drop-area" style="border: 2px dashed rgba(128,128,128,0.5); [cite: 134] padding: 20px; text-align: center; cursor: pointer; border-radius: 8px;">Drag and drop CSV or Word (.docx) file or tap to open.</div> 
+            <div id="patent-hidden-indicator" class="hidden" style="text-align:center; margin-bottom:10px;"> <button onclick="togglePatentInfo()" style="background:none; border:1px solid rgba(128,128,128,0.5); color:inherit; font-size:10px; padding:2px 10px; border-radius:4px; cursor:pointer;">Show Patent Info ▾</button> </div> 
+            <div id="drop-area" style="border: 2px dashed rgba(128,128,128,0.5); padding: 20px; text-align: center; cursor: pointer; border-radius: 8px;">Drag and drop CSV or Word (.docx) file or tap to open.</div> 
             
             <div id="today-list-container" class="hidden"> 
                 <div class="today-sticky-header"> 
-                    [cite_start]<div style="display:flex; [cite: 135] gap:8px; margin-bottom:10px;"> 
-                        [cite_start]<input type="search" id="today-search" style="flex:1; [cite: 136] padding:10px; border-radius:6px; background:rgba(255,255,255,0.1); color:inherit; border:1px solid rgba(128,128,128,0.3);" placeholder="Filter today's terms..." onsearch="todayList.search(this.value)"> 
+                    <div style="display:flex; gap:8px; margin-bottom:10px;"> 
+                        <input type="search" id="today-search" style="flex:1; padding:10px; border-radius:6px; background:rgba(255,255,255,0.1); color:inherit; border:1px solid rgba(128,128,128,0.3);" placeholder="Filter today's terms..." onsearch="todayList.search(this.value)"> 
                         <div id="inline-add-header" class="inline-add-container hidden"> 
                             <input type="text" id="new-en" placeholder="EN term..."> 
-                            [cite_start][cite: 137] <input type="text" id="new-de" placeholder="DE term..."> 
+                            <input type="text" id="new-de" placeholder="DE term..."> 
                             <input type="text" id="new-fr" placeholder="FR term..."> 
-                            [cite_start]<button onclick="addNewTermInline()" class="btn-ui" style="background:var(--accent-blue); [cite: 138] color:white; border:none; height:40px;">Add</button> 
+                            <button onclick="addNewTermInline()" class="btn-ui" style="background:var(--accent-blue); color:white; border:none; height:40px;">Add</button> 
                         </div> 
-                        [cite_start]<button onclick="toggleInlineAdd()" class="btn-ui" id="btn-toggle-add" style="background:var(--accent-blue); [cite: 139] color:white; border:none;">[+] Add Term</button> 
+                        <button onclick="toggleInlineAdd()" class="btn-ui" id="btn-toggle-add" style="background:var(--accent-blue); color:white; border:none;">[+] Add Term</button> 
                         <button onclick="downloadToday()" class="btn-ui btn-download">📥 Export</button> 
                     </div> 
                     <div id="today-pinned-area" class="hidden"><table class="list-table"><tbody id="pinned-body"></tbody></table></div> 
                 </div> 
-    
-[cite_start][cite: 140]             <div id="today-scroll-area"> 
+
+                <div id="today-scroll-area"> 
                     <table class="list-table"> <tbody id="today-body" class="list"></tbody> </table> 
                 </div> 
             </div> 
             
-            [cite_start]<div style="margin-top:auto; [cite: 141] padding-top:12px; border-top:1px solid rgba(128,128,128,0.2); display:flex; justify-content:space-between; align-items:center;"> 
-                [cite_start]<div style="font-size:12px; [cite: 142] font-weight:600; opacity:0.8;">💡 Tap rows to pin terms</div> 
+            <div style="margin-top:auto; padding-top:12px; border-top:1px solid rgba(128,128,128,0.2); display:flex; justify-content:space-between; align-items:center;"> 
+                <div style="font-size:12px; font-weight:600; opacity:0.8;">💡 Tap rows to pin terms</div> 
             </div> 
         </section> 
     </div>
@@ -315,13 +313,13 @@
     <div class="pane-controls hidden">
         <button class="toggle-btn" onclick="setLayout('master')">EPO Glossary</button>
         <button class="toggle-btn" onclick="setLayout('today')">Today's vocab</button>
-        [cite_start]<span style="color:#666; [cite: 143] margin: 0 5px;">|</span>
+        <span style="color:#666; margin: 0 5px;">|</span>
         <button id="btn-gl" class="toggle-btn btn-gl" onclick="showLegal('https://www.epo.org/en/legal/guidelines-epc/2025/index.html', 'Guidelines')">GL ▴</button>
         <button id="btn-cl" class="toggle-btn btn-cl" onclick="showLegal('https://www.epo.org/en/legal/case-law/2025/index.html', 'Case Law')">Case Law ▴</button>
         <button id="btn-epc" class="toggle-btn btn-epc" onclick="showLegal('https://www.epo.org/en/legal/epc/2020/convention.html', 'EPC')">EPC ▴</button>
-        [cite_start]<span style="color:#666; [cite: 144] margin: 0 5px;">|</span>
-        [cite_start]<button id="flashcard-btn-float" class="toggle-btn hidden" onclick="toggleFlashcards()" style="background:var(--accent-blue); color:white; [cite: 145] border:none;">🎴 Flashcards</button>
-        [cite_start]<div style="display:flex; gap:6px; [cite: 146] margin-left:5px;">
+        <span style="color:#666; margin: 0 5px;">|</span>
+        <button id="flashcard-btn-float" class="toggle-btn hidden" onclick="toggleFlashcards()" style="background:var(--accent-blue); color:white; border:none;">🎴 Flashcards</button>
+        <div style="display:flex; gap:6px; margin-left:5px;">
             <div class="theme-circle" onclick="setTheme('light')" style="background:#fff;"></div>
             <div class="theme-circle" onclick="setTheme('dark')" style="background:#2d3436;"></div>
             <div class="theme-circle" onclick="setTheme('sepia')" style="background:#f4ecd8;"></div>
@@ -332,381 +330,475 @@
         let masterList, todayList, pinnedItems = [];
         let currentMetaLang = 'en';
         let flashcardIndex = 0;
-    
-[cite_start][cite: 147]     let isFlashcardFlipped = false;
+        let isFlashcardFlipped = false;
         let activeFlashcards = [];
         let previousLayout = 'master'; 
 
         const headerTranslations = {
             pat: { en: "Patent Number", de: "Patentnummer", fr: "Numéro de brevet" },
             app: { en: "Application Number", de: "Anmeldenummer", fr: "Numéro de dépôt" },
-            [cite_start]tit: [cite: 148] { en: "Title", de: "Titel", fr: "Titre" },
+            tit: { en: "Title", de: "Titel", fr: "Titre" },
             pri: { en: "Priority date", de: "Prioritätstag", fr: "Date de priorité" },
             pro: { en: "Proprietor", de: "Patentinhaber", fr: "Titulaire" },
             opp: { en: "Opponent", de: "Einsprechender", fr: "Opposant(e)" },
             res: { en: "Respondent", de: "Beschwerdegegner", fr: "Intimé(e)" },
-          [cite_start][cite: 149]   apl: { en: "Appellant", de: "Beschwerdeführer", fr: "Requérant(e)" }
+            apl: { en: "Appellant", de: "Beschwerdeführer", fr: "Requérant(e)" }
         };
-function loadHistory() {
+
+        function loadHistory() {
             const history = JSON.parse(localStorage.getItem('glossary_history') || '[]');
-const container = document.getElementById('recent-container');
+            const container = document.getElementById('recent-container');
             const itemsDiv = document.getElementById('recent-items');
             if (history.length > 0) {
                 container.classList.remove('hidden');
-itemsDiv.innerHTML = '';
+                itemsDiv.innerHTML = '';
                 history.forEach((item) => {
                     const div = document.createElement('div');
                     div.className = 'recent-item';
                     div.innerHTML = `<span>📄 ${item.name}</span><span style="font-size:11px; color:#999;">${item.date}</span>`;
                     div.onclick = () => launchApp(item.data);
- 
-                   itemsDiv.appendChild(div);
+                    itemsDiv.appendChild(div);
                 });
-}
+            }
         }
 
         function saveToHistory(name, data) {
             let history = JSON.parse(localStorage.getItem('glossary_history') || '[]');
-const newItem = { name, data, date: new Date().toLocaleDateString() };
+            const newItem = { name, data, date: new Date().toLocaleDateString() };
             history = [newItem, ...history.filter(h => h.name !== name)].slice(0, 5);
-localStorage.setItem('glossary_history', JSON.stringify(history));
+            localStorage.setItem('glossary_history', JSON.stringify(history));
         }
 
-        function togglePane(id, show) { 
+        function togglePane(id, show) {
             document.getElementById(id).classList.toggle('active', show);
-const isAnyPaneActive = document.getElementById('help-pane').classList.contains('active') || document.getElementById('details-pane').classList.contains('active');
+            const isAnyPaneActive = document.getElementById('help-pane').classList.contains('active') || document.getElementById('details-pane').classList.contains('active');
             document.querySelector('.pane-controls').classList.toggle('shifted', isAnyPaneActive);
         }
-        
-        function linkify(text) { return text.replace(/(https?:\/\/[^\s]+)/g, (url) => `<a href="${url}" target=\"_blank\">${url}</a>`);
-}
+
+        function linkify(text) {
+            return text.replace(/(https?:\/\/[^\s]+)/g, (url) => `<a href="${url}" target="_blank">${url}</a>`);
+        }
 
         function openRowDetails(values) {
             document.getElementById('det-en').textContent = values.en;
-document.getElementById('det-de').textContent = values.de || '-';
+            document.getElementById('det-de').textContent = values.de || '-';
             document.getElementById('det-fr').textContent = values.fr || '-';
             document.getElementById('det-cat').textContent = values.category || '-';
-            document.getElementById('det-def').innerHTML = values.definition ?
-linkify(values.definition) : 'No definition available.';
+            document.getElementById('det-def').innerHTML = values.definition ? linkify(values.definition) : 'No definition available.';
             togglePane('details-pane', true);
         }
 
         function populateHeaderSelect() {
             const sel = document.getElementById('header-select');
-sel.innerHTML = '';
+            sel.innerHTML = '';
             Object.keys(headerTranslations).forEach(k => {
                 const opt = document.createElement('option');
-                opt.value = k; opt.textContent = headerTranslations[k][currentMetaLang]; sel.appendChild(opt);
+                opt.value = k;
+                opt.textContent = headerTranslations[k][currentMetaLang];
+                sel.appendChild(opt);
             });
-}
+        }
 
         function setMetaLang(lang) {
             currentMetaLang = lang;
-document.querySelectorAll('.lang-toggle-btn').forEach(b => b.classList.toggle('active', b.id === `btn-meta-${lang}`));
+            document.querySelectorAll('.lang-toggle-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === lang));
             populateHeaderSelect();
             document.querySelectorAll('#meta-table-body tr').forEach(tr => {
-                const type = tr.dataset.type; const num = tr.dataset.num || '';
+                const type = tr.dataset.type;
+                const num = tr.dataset.num || '';
                 tr.querySelector('.info-label').textContent = headerTranslations[type][lang] + (num ? ' ' + num : '');
             });
-}
+        }
 
-        function addMetaRow(type, val = '') {
-            type = type || document.getElementById('header-select').value;
-const table = document.getElementById('meta-table-body');
-            let num = ''; if(['opp', 'res', 'apl'].includes(type)) num = table.querySelectorAll(`tr[data-type="${type}"]`).length + 1;
+        function addMetaRow(type = null, value = '') {
+            if (!type) type = document.getElementById('header-select-val') || document.getElementById('header-select').value;
+            const table = document.getElementById('meta-table-body');
+            let num = '';
+            if(['opp', 'res', 'apl'].includes(type)) {
+                num = table.querySelectorAll(`tr[data-type="${type}"]`).length + 1;
+            }
             const tr = document.createElement('tr');
-tr.dataset.type = type; tr.dataset.num = num;
-            tr.innerHTML = `<td class="info-label">${headerTranslations[type][currentMetaLang]} ${num}</td><td><input class="input-inline-edit" placeholder="..." value="${val}"></td><td style="width:20px;"><button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">×</button></td>`;
+            tr.dataset.type = type;
+            tr.dataset.num = num;
+            tr.innerHTML = `
+                <td class="info-label">${headerTranslations[type][currentMetaLang]} ${num}</td>
+                <td><input class="input-inline-edit" value="${value}" placeholder="..."></td>
+                <td style="width:20px;"><button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">×</button></td>
+            `;
             table.appendChild(tr);
-}
+        }
 
         function togglePatentInfo() {
             const infoWrapper = document.getElementById('patent-info-wrapper');
-const hiddenIndicator = document.getElementById('patent-hidden-indicator');
+            const hiddenIndicator = document.getElementById('patent-hidden-indicator');
             const isCurrentlyHidden = infoWrapper.classList.toggle('hidden');
-            
-            // Explicitly set indicator visibility based on wrapper state
             if (isCurrentlyHidden) {
                 hiddenIndicator.classList.remove('hidden');
-} else {
+            } else {
                 hiddenIndicator.classList.add('hidden');
-}
+            }
         }
 
         document.getElementById('master-file-input').onchange = (e) => {
             const file = e.target.files[0];
-Papa.parse(file, { header: true, skipEmptyLines: true, complete: (r) => {
-                const clean = r.data.map(row => ({
-                    en: row.EN || row.en || '', de: row.DE || row.de || '', fr: row.FR || row.fr || '',
-                    definition: row.Definition || row.definition || '',
-        
-            category: (row.Category || row.category || '').replace(/[\[\]"]/g, '').split(',').map(s => s.trim()).filter(s => s).join(', ')
-                }));
-                saveToHistory(file.name, clean); launchApp(clean);
-            }});
+            Papa.parse(file, {
+                header: true,
+                skipEmptyLines: true,
+                complete: (r) => {
+                    const clean = r.data.map(row => ({
+                        en: row.EN || row.en || '',
+                        de: row.DE || row.de || '',
+                        fr: row.FR || row.fr || '',
+                        definition: row.Definition || row.definition || '',
+                        category: (row.Category || row.category || '').replace(/[\[\]"]/g, '').split(',').map(s => s.trim()).filter(s => s).join(', ')
+                    }));
+                    saveToHistory(file.name, clean);
+                    launchApp(clean);
+                }
+            });
         };
 
         function launchApp(data) {
             document.getElementById('upload-screen').classList.add('hidden');
- 
-           document.getElementById('app-wrapper').classList.remove('hidden');
+            document.getElementById('app-wrapper').classList.remove('hidden');
             document.querySelector('.pane-controls').classList.remove('hidden');
-            masterList = new List('main-section', { 
-                valueNames: ['en', 'de', 'fr', 'category', 'definition'], 
-                item: `<tr class="master-row"><td class="en col-en"></td><td class="de col-de"></td><td class="fr col-fr"></td><td class="category col-cat"></td></tr>` 
-           
- }, data);
+            
+            masterList = new List('main-section', {
+                valueNames: ['en', 'de', 'fr', 'category', 'definition'],
+                item: `<tr class="master-row"><td class="en col-en"></td><td class="de col-de"></td><td class="fr col-fr"></td><td class="category col-cat"></td></tr>`
+            }, data);
+
             masterList.items.forEach(item => {
-                const v = item.values(); if (v.definition && v.definition.trim()) item.elm.querySelector('.en').innerHTML += '💡';
+                const v = item.values();
+                if (v.definition && v.definition.trim()) {
+                    item.elm.querySelector('.en').innerHTML += ' 💡';
+                }
                 item.elm.onclick = () => openRowDetails(v);
             });
-const cats = [...new Set(data.flatMap(i => i.category.split(',').map(s => s.trim())))].filter(s => s).sort();
-            const filterEl = document.getElementById('master-cat-list'); filterEl.innerHTML = '';
-cats.forEach(c => {
-                const label = document.createElement('label'); label.style.display = 'block'; label.innerHTML = `<input type="checkbox" value="${c}" class="cat-chk"> ${c}`;
-                label.querySelector('input').onchange = updateFilters; filterEl.appendChild(label);
+
+            const cats = [...new Set(data.flatMap(d => d.category.split(', ')))].filter(c => c).sort();
+            const catList = document.getElementById('master-cat-list');
+            catList.innerHTML = '';
+            cats.forEach(c => {
+                const label = document.createElement('label');
+                label.style.display = 'block';
+                label.style.marginBottom = '8px';
+                label.innerHTML = `<input type="checkbox" value="${c}" onchange="filterByCategory()"> ${c}`;
+                catList.appendChild(label);
             });
-setLayout('master');
+            
+            setLayout('master');
         }
 
-        function updateFilters() {
-            const sel = Array.from(document.querySelectorAll('.cat-chk:checked')).map(i => i.value);
-const badge = document.getElementById('cat-badge-val');
-            const resetBtn = document.getElementById('cat-reset-btn');
-            if(sel.length > 0) { badge.classList.remove('hidden'); badge.textContent = sel.length; resetBtn.classList.remove('hidden');
-} else { badge.classList.add('hidden'); resetBtn.classList.add('hidden'); }
-            masterList.filter(item => sel.length === 0 || sel.every(s => item.values().category.includes(s)));
-}
-
-        function resetCategories() { document.querySelectorAll('.cat-chk').forEach(c => c.checked = false); updateFilters();
-}
-        function toggleCol(col, show) { document.getElementById('main-list').classList.toggle(`hide-${col}`, !show);
-}
-        function downloadMaster() { const csv = Papa.unparse(masterList.items.map(i => i.values()));
-const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url;
-a.download = 'glossary_export.csv'; a.click(); }
-
-        const dropArea = document.getElementById('drop-area');
-dropArea.onclick = () => { let i = document.createElement('input'); i.type='file'; i.onchange=(e)=>handleToday(e.target.files[0]); i.click(); };
-        dropArea.ondragover = (e) => { e.preventDefault(); e.stopPropagation();
-};
-        dropArea.ondragenter = (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.add('drag-over'); };
-        dropArea.ondragleave = (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.remove('drag-over'); };
-dropArea.ondrop = (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.remove('drag-over'); if (e.dataTransfer.files && e.dataTransfer.files.length > 0) handleToday(e.dataTransfer.files[0]); };
-function handleToday(file) {
-            const ext = file.name.split('.').pop().toLowerCase();
-if (ext === 'csv') {
-                Papa.parse(file, { header: true, skipEmptyLines: true, complete: (r) => {
-                    processTodayData(r.data);
-                }});
-} else if (ext === 'docx') {
-                const r = new FileReader();
-r.onload = (e) => mammoth.convertToHtml({arrayBuffer: e.target.result}).then(res => {
-                    const temp = document.createElement('div'); temp.innerHTML = res.value; const rows = Array.from(temp.querySelectorAll('tr'));
-                    if (rows.length < 1) return; 
-                    const headers = Array.from(rows[0].querySelectorAll('td')).map(td => td.innerText.trim().toLowerCase());
-                    const data = rows.slice(1).map(tr => { 
-                        let o = {}; 
-                        tr.querySelectorAll('td').forEach((td, i) => { if(headers[i]) o[headers[i]] = td.innerText.trim(); }); 
-                        return o; 
-                    });
-                    processTodayData(data);
+        function filterByCategory() {
+            const checked = Array.from(document.querySelectorAll('#master-cat-list input:checked')).map(i => i.value);
+            document.getElementById('cat-badge-val').textContent = checked.length;
+            document.getElementById('cat-badge-val').classList.toggle('hidden', checked.length === 0);
+            document.getElementById('cat-reset-btn').classList.toggle('hidden', checked.length === 0);
+            
+            if (checked.length === 0) {
+                masterList.filter();
+            } else {
+                masterList.filter(item => {
+                    const itemCats = item.values().category.split(', ');
+                    return checked.some(c => itemCats.includes(c));
                 });
-r.readAsArrayBuffer(file);
+            }
+        }
+
+        function resetCategories() {
+            document.querySelectorAll('#master-cat-list input').forEach(i => i.checked = false);
+            filterByCategory();
+        }
+
+        function toggleCol(col, show) {
+            document.getElementById('main-list').classList.toggle('hide-' + col, !show);
+        }
+
+        // --- Today's Vocab Logic ---
+        const dropArea = document.getElementById('drop-area');
+        dropArea.onclick = () => {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.csv, .docx';
+            input.onchange = (e) => handleTodayFile(e.target.files[0]);
+            input.click();
+        };
+
+        dropArea.ondragover = (e) => { e.preventDefault(); dropArea.classList.add('drag-over'); };
+        dropArea.ondragleave = () => dropArea.classList.remove('drag-over');
+        dropArea.ondrop = (e) => {
+            e.preventDefault();
+            dropArea.classList.remove('drag-over');
+            handleTodayFile(e.dataTransfer.files[0]);
+        };
+
+        function handleTodayFile(file) {
+            if (!file) return;
+            if (file.name.endsWith('.docx')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    mammoth.convertToHtml({ arrayBuffer: e.target.result })
+                        .then(result => {
+                            const temp = document.createElement('div');
+                            temp.innerHTML = result.value;
+                            const rows = Array.from(temp.querySelectorAll('tr'));
+                            if (rows.length > 0) {
+                                const headers = Array.from(rows[0].querySelectorAll('td')).map(td => td.innerText.trim().toUpperCase());
+                                const data = rows.slice(1).map(row => {
+                                    const cells = Array.from(row.querySelectorAll('td'));
+                                    let obj = {};
+                                    headers.forEach((h, i) => { if(cells[i]) obj[h] = cells[i].innerText.trim(); });
+                                    return obj;
+                                });
+                                processTodayData(data);
+                            }
+                        });
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                Papa.parse(file, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (r) => processTodayData(r.data)
+                });
             }
         }
 
         function processTodayData(data) {
-            const norm = [];
             const metaTable = document.getElementById('meta-table-body');
-            let detectedLang = 'en';
+            metaTable.innerHTML = '';
+            const listData = [];
 
             data.forEach(row => {
-                let o = {};
-                let isMetaRow = false;
-                
-                Object.keys(row).forEach(k => {
-                    const l = k.toLowerCase();
-                    const val = (row[k] || '').trim();
-                    if (!val) return;
+                const en = row.EN || row.en || '';
+                const de = row.DE || row.de || '';
+                const fr = row.FR || row.fr || '';
+                const labelEn = en.toLowerCase();
 
-                    // Detect Language and Meta Key
-                    Object.keys(headerTranslations).forEach(typeKey => {
-                        ['en', 'de', 'fr'].forEach(lang => {
-                            if (val.toLowerCase() === headerTranslations[typeKey][lang].toLowerCase()) {
-                                detectedLang = lang;
-                                isMetaRow = true;
-                                o.metaType = typeKey;
-                            }
-                        });
+                // Mapping for patent info with expanded language support 
+                const matchType = (type) => {
+                    const trans = headerTranslations[type];
+                    return labelEn.includes(trans.en.toLowerCase()) || 
+                           de.toLowerCase().includes(trans.de.toLowerCase()) || 
+                           fr.toLowerCase().includes(trans.fr.toLowerCase());
+                };
+
+                if (matchType('pat')) addMetaRow('pat', en);
+                else if (matchType('app')) addMetaRow('app', en);
+                else if (matchType('tit')) addMetaRow('tit', en);
+                else if (matchType('pri')) addMetaRow('pri', en);
+                else if (matchType('pro')) addMetaRow('pro', en);
+                else if (matchType('opp')) addMetaRow('opp', en);
+                else if (matchType('res')) addMetaRow('res', en);
+                else if (matchType('apl')) addMetaRow('apl', en);
+                else if (en || de || fr) {
+                    listData.push({
+                        en, de, fr,
+                        category: (row.Category || row.category || ''),
+                        definition: (row.Definition || row.definition || '')
                     });
-
-                    if (l === 'en' || l === 'english') o.en = val;
-                    if (l === 'de' || l === 'german') o.de = val;
-                    if (l === 'fr' || l === 'french') o.fr = val;
-                    if (l === 'definition') o.definition = val;
-                });
-
-                if (isMetaRow) {
-                    if (metaTable.innerHTML === '') populateHeaderSelect(); // Ensure defaults cleared if it was first load
-                    const metaVal = o[detectedLang] || ''; // The actual data for the field
-                    addMetaRow(o.metaType, metaVal);
-                } else if (o.en || o.de || o.fr) {
-                    norm.push(o);
                 }
             });
 
-            if (detectedLang !== currentMetaLang) setMetaLang(detectedLang);
-            initToday(norm);
+            document.getElementById('drop-area').classList.add('hidden');
+            document.getElementById('today-list-container').classList.remove('hidden');
+            document.getElementById('flashcard-btn-float').classList.remove('hidden');
+
+            todayList = new List('today-section', {
+                valueNames: ['en', 'de', 'fr', 'category', 'definition'],
+                item: `<tr><td class="en"></td><td class="de"></td><td class="fr"></td></tr>`
+            }, listData);
+
+            todayList.items.forEach(item => {
+                item.elm.onclick = () => togglePin(item.values().en);
+            });
+            
+            resetFlashcards();
         }
 
-        function initToday(data) {
-            document.getElementById('drop-area').classList.add('hidden');
-document.getElementById('today-list-container').classList.remove('hidden');
-            document.getElementById('flashcard-btn-float').classList.remove('hidden');
-            todayList = new List('today-section', { valueNames: ['en', 'de', 'fr'], item: `<tr onclick=\"togglePin(this)\" style=\"cursor:pointer;\"><td class=\"en\"></td><td class=\"de\"></td><td class=\"fr\"></td></tr>` }, data);
-}
+        function togglePin(en) {
+            const item = todayList.items.find(i => i.values().en === en);
+            if (!item) return;
+            const idx = pinnedItems.findIndex(p => p.en === en);
+            if (idx > -1) {
+                pinnedItems.splice(idx, 1);
+                item.elm.style.background = '';
+            } else {
+                pinnedItems.push(item.values());
+                item.elm.style.background = 'rgba(255,255,255,0.1)';
+            }
+            renderPinned();
+        }
+
+        function renderPinned() {
+            const body = document.getElementById('pinned-body');
+            const area = document.getElementById('today-pinned-area');
+            body.innerHTML = '';
+            if (pinnedItems.length === 0) {
+                area.classList.add('hidden');
+                return;
+            }
+            area.classList.remove('hidden');
+            pinnedItems.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.style.background = 'rgba(52, 152, 219, 0.2)';
+                tr.innerHTML = `<td>${p.en}</td><td>${p.de}</td><td>${p.fr}</td>`;
+                tr.onclick = () => togglePin(p.en);
+                body.appendChild(tr);
+            });
+        }
 
         function toggleInlineAdd() {
             const header = document.getElementById('inline-add-header');
-const search = document.getElementById('today-search');
             const btn = document.getElementById('btn-toggle-add');
-            const isAdding = header.classList.toggle('hidden');
-            search.classList.toggle('hidden', !isAdding);
-            btn.textContent = isAdding ?
-'[+] Add Term' : 'Cancel';
+            const isHidden = header.classList.toggle('hidden');
+            btn.textContent = isHidden ? '[+] Add Term' : 'Cancel';
         }
 
         function addNewTermInline() {
-            const en = document.getElementById('new-en').value.trim(), de = document.getElementById('new-de').value.trim(), fr = document.getElementById('new-fr').value.trim();
-if (!en) return;
-            if (!todayList) initToday([{ en, de, fr }]); else todayList.add({ en, de, fr });
+            const en = document.getElementById('new-en').value.trim();
+            const de = document.getElementById('new-de').value.trim();
+            const fr = document.getElementById('new-fr').value.trim();
+            if (!en && !de && !fr) return;
+            
+            todayList.add({ en, de, fr, category: '', definition: '' });
+            const newItem = todayList.items[todayList.items.length - 1];
+            newItem.elm.onclick = () => togglePin(en);
+            
             document.getElementById('new-en').value = '';
-document.getElementById('new-de').value = ''; document.getElementById('new-fr').value = '';
+            document.getElementById('new-de').value = '';
+            document.getElementById('new-fr').value = '';
             toggleInlineAdd();
-        }
-
-        function togglePin(row) {
-            const item = { en: row.querySelector('.en').textContent, de: row.querySelector('.de').textContent, fr: row.querySelector('.fr').textContent };
-const idx = pinnedItems.findIndex(i => i.en === item.en); if (idx > -1) pinnedItems.splice(idx, 1); else pinnedItems.push(item);
-            renderPinned();
-}
-
-        function renderPinned() {
-            const area = document.getElementById('today-pinned-area'), body = document.getElementById('pinned-body');
-body.innerHTML = ''; area.classList.toggle('hidden', !pinnedItems.length);
-            pinnedItems.forEach(item => {
-                const tr = document.createElement('tr'); tr.style.background = 'rgba(0,102,204,0.2)';
-                tr.onclick = () => { pinnedItems = pinnedItems.filter(i => i.en !== item.en); renderPinned(); };
-                tr.innerHTML = `<td style=\"width:33%;\">📌 ${item.en}</td><td style=\"width:33%;\">${item.de}</td><td style=\"width:33%;\">${item.fr}</td>`;
-                body.appendChild(tr);
-    
-        });
-        }
-
-        function resetFlashcards() {
-            if (!todayList || todayList.items.length === 0) return;
-activeFlashcards = [...todayList.items.map(i => i.values())];
-            for (let i = activeFlashcards.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-[activeFlashcards[i], activeFlashcards[j]] = [activeFlashcards[j], activeFlashcards[i]];
-            }
-            flashcardIndex = 0;
-showFlashcard();
+            resetFlashcards();
         }
 
         function toggleFlashcards() {
-            const isVisible = document.getElementById('flashcard-ui').classList.toggle('hidden');
-document.getElementById('patent-info-wrapper').classList.toggle('hidden', !isVisible);
-            if (!isVisible) resetFlashcards();
+            const ui = document.getElementById('flashcard-ui');
+            const list = document.getElementById('today-list-container');
+            const btn = document.getElementById('flashcard-btn-float');
+            const isVisible = !ui.classList.contains('hidden');
+            
+            if (isVisible) {
+                ui.classList.add('hidden');
+                list.classList.remove('hidden');
+                btn.textContent = '🎴 Flashcards';
+                btn.style.background = 'var(--accent-blue)';
+            } else {
+                ui.classList.remove('hidden');
+                list.classList.add('hidden');
+                btn.textContent = '📖 List View';
+                btn.style.background = 'var(--accent-green)';
+                resetFlashcards();
+            }
         }
 
-        function showFlashcard() {
-            const content = document.getElementById('flashcard-content');
-const langLabel = document.getElementById('flashcard-lang');
-            const countLabel = document.getElementById('flash-count');
-            if (activeFlashcards.length === 0) { langLabel.textContent = "Finished";
-content.textContent = "All terms learned!"; countLabel.textContent = "0 left"; return;
-}
-            const item = activeFlashcards[flashcardIndex];
-            const source = document.getElementById('flash-source-lang').value;
-isFlashcardFlipped = false;
-            langLabel.textContent = source === 'en' ? 'English' : (source === 'de' ? 'German' : 'French');
-content.textContent = item[source];
-            countLabel.textContent = `${activeFlashcards.length} left`;
+        function resetFlashcards() {
+            activeFlashcards = todayList.items.map(i => i.values()).filter(v => v.en || v.de || v.fr);
+            flashcardIndex = 0;
+            isFlashcardFlipped = false;
+            updateFlashcard();
         }
 
-        function flipFlashcard() {
-            if (activeFlashcards.length === 0) return;
-const item = activeFlashcards[flashcardIndex];
-            const source = document.getElementById('flash-source-lang').value;
+        function updateFlashcard() {
+            const card = activeFlashcards[flashcardIndex];
             const content = document.getElementById('flashcard-content');
             const langLabel = document.getElementById('flashcard-lang');
-            isFlashcardFlipped = !isFlashcardFlipped;
-if (isFlashcardFlipped) {
-                const targets = ['en', 'de', 'fr'].filter(l => l !== source);
-langLabel.textContent = "Translations";
-                content.innerHTML = `${item[targets[0]]}<br><span style="font-weight:normal; font-size:14px; opacity:0.7;">${item[targets[1]]}</span>`;
-            } else { showFlashcard();
-}
+            const count = document.getElementById('flash-count');
+            const sourceLang = document.getElementById('flash-source-lang').value;
+
+            if (!card) {
+                content.textContent = "All caught up!";
+                langLabel.textContent = "---";
+                count.textContent = "";
+                return;
+            }
+
+            count.textContent = `${flashcardIndex + 1} / ${activeFlashcards.length}`;
+
+            if (!isFlashcardFlipped) {
+                content.textContent = card[sourceLang] || "---";
+                langLabel.textContent = sourceLang;
+            } else {
+                const targets = ['en', 'de', 'fr'].filter(l => l !== sourceLang);
+                content.innerHTML = targets.map(l => `<div style="font-size:14px; margin-bottom:5px;"><span style="opacity:0.5; font-size:10px;">${l.toUpperCase()}:</span> ${card[l] || '-'}</div>`).join('');
+                langLabel.textContent = "Translations";
+            }
         }
 
-        function markFlashcardDone() {
-            if (activeFlashcards.length === 0) return;
-activeFlashcards.splice(flashcardIndex, 1);
-            if (flashcardIndex >= activeFlashcards.length) flashcardIndex = 0;
-            showFlashcard();
-}
-
-        function nextFlashcard() { if (activeFlashcards.length === 0) return;
-flashcardIndex = (flashcardIndex + 1) % activeFlashcards.length; showFlashcard(); }
-        function prevFlashcard() { if (activeFlashcards.length === 0) return;
-flashcardIndex = (flashcardIndex - 1 + activeFlashcards.length) % activeFlashcards.length; showFlashcard();
-}
+        function flipFlashcard() { isFlashcardFlipped = !isFlashcardFlipped; updateFlashcard(); }
+        function nextFlashcard() { flashcardIndex = (flashcardIndex + 1) % activeFlashcards.length; isFlashcardFlipped = false; updateFlashcard(); }
+        function prevFlashcard() { flashcardIndex = (flashcardIndex - 1 + activeFlashcards.length) % activeFlashcards.length; isFlashcardFlipped = false; updateFlashcard(); }
+        function markFlashcardDone() { activeFlashcards.splice(flashcardIndex, 1); if (flashcardIndex >= activeFlashcards.length) flashcardIndex = 0; isFlashcardFlipped = false; updateFlashcard(); }
 
         function setLayout(mode) {
-            const m = document.getElementById('main-section'), t = document.getElementById('today-section');
-m.classList.remove('hidden', 'full-width'); t.classList.remove('hidden', 'full-width');
-            document.querySelector('.header-with-logo').classList.remove('hidden');
-            document.getElementById('main-list').classList.remove('hidden'); 
-            document.getElementById('legal-iframe-container').classList.add('hidden');
-            document.getElementById('main-title').textContent = 'Glossary';
-            document.getElementById('btn-gl').textContent = 'GL ▴'; document.getElementById('btn-cl').textContent = 'Case Law ▴';
-document.getElementById('btn-epc').textContent = 'EPC ▴';
-            
-            if(mode === 'master') { t.classList.add('hidden'); m.classList.add('full-width'); previousLayout = 'master';
-}
-            if(mode === 'today') { m.classList.add('hidden'); t.classList.add('full-width');
-previousLayout = 'today'; }
+            const main = document.getElementById('main-section');
+            const today = document.getElementById('today-section');
+            const isMobile = window.innerWidth <= 768;
+
+            if (mode === 'master') {
+                main.classList.remove('hidden');
+                if (isMobile) today.classList.add('hidden');
+                main.classList.add('full-width');
+                today.classList.remove('full-width');
+                document.getElementById('legal-iframe-container').classList.add('hidden');
+                document.getElementById('main-list').classList.remove('hidden');
+            } else {
+                today.classList.remove('hidden');
+                if (isMobile) main.classList.add('hidden');
+                today.classList.add('full-width');
+                main.classList.remove('full-width');
+            }
         }
 
         function showLegal(url, title) {
-            const container = document.getElementById('legal-iframe-container'), iframe = document.getElementById('legal-frame');
-const btnId = title === 'Guidelines' ? 'btn-gl' : (title === 'Case Law' ? 'btn-cl' : 'btn-epc'), btn = document.getElementById(btnId);
-if (!container.classList.contains('hidden') && iframe.src === url) { setLayout(previousLayout); return; }
+            const container = document.getElementById('legal-iframe-container');
+            const list = document.getElementById('main-list');
+            const frame = document.getElementById('legal-frame');
+            const titleEl = document.getElementById('main-title');
+            const btn = document.getElementById('btn-' + (title === 'Guidelines' ? 'gl' : (title === 'Case Law' ? 'cl' : 'epc')));
             
-            document.querySelector('.header-with-logo').classList.add('hidden');
-document.getElementById('main-list').classList.add('hidden'); 
-            container.classList.remove('hidden'); 
-            iframe.src = url; 
-            document.getElementById('main-title').textContent = title;
-            
-            document.getElementById('btn-gl').textContent = 'GL ▴'; document.getElementById('btn-cl').textContent = 'Case Law ▴';
-document.getElementById('btn-epc').textContent = 'EPC ▴';
-            const baseText = title === 'Guidelines' ?
-'GL' : (title === 'Case Law' ? 'Case Law' : 'EPC');
-            btn.textContent = baseText + ' ▾';
-}
+            if (container.classList.contains('hidden') || frame.src !== url) {
+                container.classList.remove('hidden');
+                list.classList.add('hidden');
+                frame.src = url;
+                titleEl.textContent = title;
+                setLayout('master');
+                
+                document.querySelectorAll('.toggle-btn').forEach(b => b.textContent = b.textContent.replace(' ▾', ' ▴'));
+                btn.textContent = (title === 'Guidelines' ? 'GL' : (title === 'Case Law' ? 'Case Law' : 'EPC')) + ' ▾';
+            } else {
+                container.classList.add('hidden');
+                list.classList.remove('hidden');
+                titleEl.textContent = 'Glossary';
+                btn.textContent = (title === 'Guidelines' ? 'GL' : (title === 'Case Law' ? 'Case Law' : 'EPC')) + ' ▴';
+            }
+        }
 
-        function setTheme(t) { document.getElementById('today-section').className = 'theme-' + t;
-}
-        function toggleDrop(id, e) { e.stopPropagation(); const el = document.getElementById(id);
-const isVis = el.style.display === 'block'; document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none'); el.style.display = isVis ? 'none' : 'block';
-}
-        function downloadToday() { if (!todayList || todayList.items.length === 0) return;
-const csv = Papa.unparse(todayList.items.map(i => i.values())); const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob);
-const a = document.createElement('a'); a.href = url; a.download = 'today_glossary.csv'; a.click();
-}
+        function downloadMaster() {
+            const data = masterList.matchingItems.map(i => i.values());
+            const csv = Papa.unparse(data);
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'epo_glossary_export.csv';
+            a.click();
+        }
+
+        function downloadToday() {
+            if (!todayList || todayList.items.length === 0) return;
+            const csv = Papa.unparse(todayList.items.map(i => i.values()));
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'today_glossary.csv';
+            a.click();
+        }
+
+        function setTheme(t) { document.getElementById('today-section').className = 'theme-' + t; }
+        function toggleDrop(id, e) { e.stopPropagation(); const el = document.getElementById(id); const isVis = el.style.display === 'block'; document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none'); el.style.display = isVis ? 'none' : 'block'; }
 
         window.onload = () => { 
             loadHistory(); 
@@ -714,8 +806,7 @@ const a = document.createElement('a'); a.href = url; a.download = 'today_glossar
             ['pat', 'app', 'tit'].forEach(id => addMetaRow(id)); 
         };
         document.onclick = () => document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none');
-document.getElementById('master-search').oninput = (e) => masterList.search(e.target.value, ['en', 'de', 'fr']);
-        document.getElementById('today-search').oninput = (e) => todayList.search(e.target.value);
+        document.getElementById('master-search').oninput = (e) => masterList.search(e.target.value, ['en', 'de', 'fr']);
     </script>
 </body>
 </html>
