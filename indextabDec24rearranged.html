@@ -640,6 +640,17 @@
             document.getElementById('main-title').textContent = 'Glossary';
             document.getElementById('btn-gl').textContent = 'GL ▴'; document.getElementById('btn-cl').textContent = 'Case Law ▴';
             document.getElementById('btn-epc').textContent = 'EPC ▴';
+
+            masterBtn.style.boxShadow = 'none'; todayBtn.style.boxShadow = 'none';
+
+            if(mode === 'master') { 
+                t.classList.add('hidden'); m.classList.add('full-width'); previousLayout = 'master'; 
+                masterBtn.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.2)';
+            }
+            if(mode === 'today') { 
+                m.classList.add('hidden'); t.classList.add('full-width'); previousLayout = 'today'; 
+                todayBtn.style.boxShadow = 'inset 0 2px 4px rgba(0,0,0,0.2)';
+            }
             
             const themeToggles = document.getElementById('theme-toggles');
             if(mode === 'master') { 
