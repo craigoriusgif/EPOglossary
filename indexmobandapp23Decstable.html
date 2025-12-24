@@ -147,17 +147,18 @@
 </head>
 <body>
 
-   <div id="help-pane" class="side-pane">
+    <div id="help-pane" class="side-pane">
         <div class="pane-header"><h2>Help</h2><button class="close-pane-btn" onclick="togglePane('help-pane', false)">&times;</button></div>
         <div style="font-size: 14px; line-height: 1.6; overflow-y: auto;">
-             <p><strong>👀 Views:</strong> Switch between <strong>EPO Glossary</strong> view and <strong>Today</strong> view. <strong>EPO Glossary</strong> is a comprehensive terminology reference. Access the Guidelines, Case Law and EPC via the buttons at the bottom of the screen. <strong>Today's vocab</strong> is where you add your vocab list for a specific OP.</p>
+             <p><strong>👀 Views:</strong> Switch between <strong>EPO Glossary</strong> view and <strong>Today</strong> view. <strong>EPO Glossary</strong> is a comprehensive terminology reference. Access the Guidelines, Case Law and EPC via the buttons at the bottom of the screen.</p>
+            <p><strong>Today's Vocab</strong> is where you add your vocab list for a specific OP.</p>
             <p><strong>🔍 Search:</strong> Filter terms in any language instantly.</p>
             <p><strong>🏷️ Categories:</strong> Tap the <strong>Categories</strong> button to filter by legal or technical field.</p>
-            <p><strong>▥ Columns:</strong> Tap the <strong>Columns</strong> button to show/hide languages or categories. <strong>Tip:</strong> 3 languages are easier to read if you rotate your phone to landscape mode.</p>
+            <p><strong>▥ Columns:</strong> Tap the <strong>Columns</strong> button to show/hide languages or categories.</p>
             <p><strong>💡 Definitions:</strong> Tap rows with a <strong>light bulb</strong> to see more information or related links.</p>
             <p><strong>📥 Download:</strong> Downloads the filtered <strong>EPO Glossary</strong> terminology only, e.g. <strong>Chemicals</strong> category, <strong>Appeal</strong> category or terms matching <strong>acid</strong>.</p>
-            <p><strong>📥 Export:</strong> Exports the <strong>Today's vocab</strong> terminology including any new terms you add during the OP.</strong></p>
-            <p><strong>📌 Pinning:</strong> Tap terms in <strong>Today's vocab</strong> list to keep terms visible at the top while scrolling.</p>
+            <p><strong>📥 Export:</strong> Exports the <strong>Today's Vocab</strong> terminology including any new terms you add during the OP.</p>
+            <p><strong>📌 Pinning:</strong> Tap terms in <strong>Today's Vocab</strong> list to keep terms visible at the top while scrolling.</p>
             <p><strong>🎴 Flashcards:</strong> Flashcards help you practise your vocab for today's OP (not the EPO Glossary). The button appears once you load today's vocab. Tap the card to flip and test yourself. Mark done to remove the card from the deck. Tap the Source dropdown to change language.</p>
            
             <div class="useful-links" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
@@ -168,7 +169,6 @@
                 <a href="https://www.deepl.com/" target="_blank">DeepL</a>
                 <a href="https://claude.ai/" target="_blank">Claude AI</a>
                 <a href="https://www.wikipedia.org/" target="_blank">Wikipedia</a>
-                
             </div>
         </div>
     </div>
@@ -183,15 +183,15 @@
                     <li>Tap the blue <strong>Load EPO Glossary</strong> button in the middle of the screen.</li>
                     <li>Open the CSV file. The Language Service will periodically provide an updated working version called <strong>EPO glossary.csv</strong>.</li>
                     <li><strong>NB</strong> If using your own file, ensure your CSV has columns titled: <em>EN, DE, FR, Category,</em> and <em>Definition</em> even if they are blank.</li>
-                    <li>Recently used glossary files will be remembered during your session. Tap on a recently used file to re-open it.
+                    <li>Recently used glossary files will be remembered during your session. Tap on a recently used file to re-open it.</li>
                 </ol>
             </div>
-            <p>Once the file has loaded, you can search thousands of terms instantly.
-
-            <p><strong>Oral proceedings</strong>
-            <p>To prepare and consult terminology for a specific oral proceedings, you <strong>must</strong> first load the EPO glossary as described above.
-            <p>Then switch to the <strong>Today's vocab</strong> view and add your own glossary in either CSV or Word (.docx) format.
-            <p>Ensure your file has columns with <em>EN, DE, FR, Category,</em> and <em>Definition</em> in the first row (even if you are not using them). The Language Service has provided a template for you to use.</p>
+            <p>Once the file has loaded, you can search thousands of terms instantly.</p>
+            <p><strong>Oral proceedings</strong></p>
+            <p>To import and consult terminology for a specific oral proceedings, you <strong>must</strong> first load the EPO glossary as described above.</p>
+            <p>Then switch to the <strong>Today's Vocab</strong> view and add your own glossary in either CSV or Word (.docx) format.</p>
+            <p>Ensure your file has columns with <em>EN, DE, FR, Category,</em> and <em>Definition</em> in the first row (even if you are not using them).</p>
+            <p>The Language Service has provided a template for you to use.</p>
         </div>
     </div>
     
@@ -341,7 +341,7 @@
     <div class="pane-controls hidden">
         <button id="btn-split-view" class="toggle-btn" onclick="setLayout('split')">Split View</button>
         <button class="toggle-btn" onclick="setLayout('master')">EPO Glossary</button>
-        <button class="toggle-btn" onclick="setLayout('today')">Today's vocab</button>
+        <button class="toggle-btn" onclick="setLayout('today')">Today's Vocab</button>
         <button class="toggle-btn" onclick="setLayout('today'); togglePatentInfo();">Patent Info ▴</button>
         <button id="btn-flash-mobile" class="toggle-btn hidden" onclick="setLayout('today'); toggleFlashcards();" style="background: var(--accent-blue); color: white;">🎴 Flashcards</button>
         <span style="color:#666; margin: 0 5px;">|</span>
