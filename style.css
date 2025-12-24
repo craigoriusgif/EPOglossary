@@ -1,0 +1,25 @@
+/* 1. Default: Hide everything first */
+.mobile-only, .tablet-only, .desktop-only {
+    display: none;
+}
+
+/* 2. Show Mobile version by default on small screens */
+@media (max-width: 480px) {
+    .mobile-only {
+        display: block;
+    }
+}
+
+/* 3. Show Tablet version for medium screens */
+@media (min-width: 481px) and (max-width: 1024px) {
+    .tablet-only {
+        display: block;
+    }
+}
+
+/* 4. Show Desktop version for large screens */
+@media (min-width: 1025px) {
+    .desktop-only {
+        display: block;
+    }
+}
