@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loading...</title>
+    <script type="text/javascript">
+        function redirect() {
+            var width = window.innerWidth;
+
+            if (width <= 480) {
+                // Mobile phones
+                window.location.replace("indexmobandapp25Decstable.html");
+            } else if (width > 480 && width <= 1024) {
+                // Tablets
+                window.location.replace("indextabstableDec25.html");
+            } else {
+                // Desktop and laptops
+                window.location.replace("indexdesk25Decstablepinright.html");
+            }
+        }
+
+        // Run the function immediately
+        redirect();
+    </script>
+</head>
+<body>
+    <p>Redirecting to the best version for your device... 
+       If nothing happens, <a href="indexdesk25Decstablepinright.html">click here</a>.</p>
+</body>
+</html>
