@@ -132,6 +132,20 @@
                 display: none !important;
             }
         }
+        /* Update the existing .pane-controls or add these properties */
+.pane-controls {
+    /* Existing styles... */
+    transition: left 0.3s ease-in-out, width 0.3s ease-in-out, padding 0.3s ease-in-out; /* Added width/padding transition */
+    width: auto;
+    max-width: 800px;
+    overflow: hidden; /* Ensures content doesn't spill during collapse */
+}
+
+/* New: Accordion state for the floating bar */
+.pane-controls.collapsed {
+    width: 85px; /* Narrow enough to only show the 'Menu' button */
+    padding: 10px 5px;
+}
     </style>
 </head>
 <body>
@@ -316,23 +330,23 @@
         </section> 
     </div>
 
-    <div class="pane-controls hidden">
-        <button id="nav-btn-master" class="toggle-btn" onclick="setLayout('master')">EPO Glossary</button>
-        <span style="color:#666; margin: 0 5px;">|</span>
-        <button id="nav-btn-today" class="toggle-btn" onclick="setLayout('today')">Today’s vocab</button>
-        <button id="flashcard-btn-float" class="toggle-btn hidden" onclick="toggleFlashcards()" style="background:var(--accent-blue); color:white; border:none;">🎴 Flashcards</button>
-        
-        <div id="theme-toggles" style="display:none; gap:6px; margin-left:5px;">
-            <div class="theme-circle" onclick="setTheme('light')" style="background:#fff;"></div>
-            <div class="theme-circle" onclick="setTheme('dark')" style="background:#2d3436;"></div>
-            <div class="theme-circle" onclick="setTheme('sepia')" style="background:#f4ecd8;"></div>
-        </div>
-        
-        <span style="color:#666; margin: 0 5px;">|</span>
-        <button id="btn-gl" class="toggle-btn btn-gl" onclick="showLegal('https://www.epo.org/en/legal/guidelines-epc/2025/index.html', 'Guidelines')">GL ▴</button>
-        <button id="btn-cl" class="toggle-btn btn-cl" onclick="showLegal('https://www.epo.org/en/legal/case-law/2025/index.html', 'Case Law')">Case Law ▴</button>
-        <button id="btn-epc" class="toggle-btn btn-epc" onclick="showLegal('https://www.epo.org/en/legal/epc/2020/convention.html', 'EPC')">EPC ▴</button>
-    </div>
+    <div class="pane-controls hidden" id="bottom-controls">
+    <button id="btn-hide-menu" class="toggle-btn" style="background: #f0f2f5;" onclick="toggleMenu(true)">Hide ◂</button>
+    
+    <button id="btn-expand-menu" class="toggle-btn hidden" style="background: var(--accent-blue); color: white; border: none;" onclick="toggleMenu(false)">Menu ☰</button>
+    
+    <button id="nav-btn-master" class="toggle-btn" onclick="setLayout('master')">EPO Glossary</button>
+    <span id="sep-line-1" style="color:#666; margin: 0 5px;">|</span>
+    <button id="nav-btn-today" class="toggle-btn" onclick="setLayout('today')">Today’s vocab</button>
+    
+    <button id="flashcard-btn-float" class="toggle-btn hidden" onclick="toggleFlashcards()" style="background:var(--accent-blue); color:white; border:none;">🎴 Flashcards</button>
+
+    <span id="sep-line-2" style="color:#666; margin: 0 5px;">|</span>
+    
+    <button id="btn-gl" class="toggle-btn btn-gl" onclick="showLegal('https://www.epo.org/en/legal/guidelines-epc/2025/index.html', 'Guidelines')">GL ▴</button>
+    <button id="btn-cl" class="toggle-btn btn-cl" onclick="showLegal('https://www.epo.org/en/legal/case-law/2025/index.html', 'Case Law')">Case Law ▴</button>
+    <button id="btn-epc" class="toggle-btn btn-epc" onclick="showLegal('https://www.epo.org/en/legal/epc/2020/convention.html', 'EPC')">EPC ▴</button>
+</div>
 
     <script>
         let masterList, todayList, pinnedItems = [];
@@ -701,6 +715,35 @@
         document.onclick = () => document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none');
         document.getElementById('master-search').oninput = (e) => masterList.search(e.target.value, ['en', 'de', 'fr']);
         document.getElementById('today-search').oninput = (e) => todayList.search(e.target.value);
+
+        function toggleMenu(collapsed) {
+    const controls = document.getElementById('bottom-controls');
+    const hideBtn = document.getElementById('btn-hide-menu');
+    const expandBtn = document.getElementById('btn-expand-menu');
+    
+    // Select all other elements in the bar (buttons and spans)
+    const otherElements = controls.querySelectorAll('.toggle-btn:not(#btn-hide-menu):not(#btn-expand-menu), span');
+
+    if (collapsed) {
+        // Collapse the bar
+        controls.classList.add('collapsed');
+        hideBtn.classList.add('hidden');
+        expandBtn.classList.remove('hidden');
+        otherElements.forEach(el => el.classList.add('hidden'));
+    } else {
+        // Expand the bar
+        controls.classList.remove('collapsed');
+        hideBtn.classList.remove('hidden');
+        expandBtn.classList.add('hidden');
+        otherElements.forEach(el => {
+            // Ensure we don't accidentally show elements that should stay hidden (like Flashcards if not loaded)
+            if (el.id === 'flashcard-btn-float' && (!todayList || todayList.items.length === 0)) {
+                return; 
+            }
+            el.classList.remove('hidden');
+        });
+    }
+}
     </script>
 </body>
 </html>
