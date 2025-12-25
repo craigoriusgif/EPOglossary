@@ -383,6 +383,28 @@
             apl: { en: "Appellant", de: "Beschwerdeführer", fr: "Requérant(e)" }
         };
 
+         // NEW: Function to toggle the Menu Accordion
+        function toggleMenu(collapsed) {
+            const controls = document.getElementById('bottom-controls');
+            const hideBtn = document.getElementById('btn-hide-menu');
+            const menuBtn = document.getElementById('btn-expand-menu');
+            const otherBtns = controls.querySelectorAll('.toggle-btn:not(#btn-hide-menu):not(#btn-expand-menu)');
+            const sepLine = document.getElementById('sep-line');
+
+            if (collapsed) {
+                controls.classList.add('collapsed');
+                hideBtn.classList.add('hidden');
+                menuBtn.classList.remove('hidden');
+                sepLine.classList.add('hidden');
+                otherBtns.forEach(b => b.classList.add('hidden'));
+            } else {
+                controls.classList.remove('collapsed');
+                hideBtn.classList.remove('hidden');
+                menuBtn.classList.add('hidden');
+                sepLine.classList.remove('hidden');
+                otherBtns.forEach(b => b.classList.remove('hidden'));
+            };
+
         function loadHistory() {
             const history = JSON.parse(localStorage.getItem('glossary_history') || '[]');
             const container = document.getElementById('recent-container');
