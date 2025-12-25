@@ -350,6 +350,19 @@
         <button id="btn-epc" class="toggle-btn btn-epc" onclick="showLegal('https://www.epo.org/en/legal/epc/2020/convention.html', 'EPC')">EPC ▴</button>
     </div>
 
+      <div class="pane-controls hidden" id="bottom-controls">
+        <button id="btn-hide-menu" class="toggle-btn" style="background: #f0f2f5;" onclick="toggleMenu(true)">Hide ◂</button>
+        <button id="btn-expand-menu" class="toggle-btn hidden" style="background: var(--accent-blue); color: white; border: none;" onclick="toggleMenu(false)">Menu ☰</button>
+        
+        <button id="btn-split-view" class="toggle-btn" onclick="setLayout('split')">Split View</button>
+        <button class="toggle-btn" onclick="setLayout('master')">EPO Glossary</button>
+        <button class="toggle-btn" onclick="setLayout('today')">Today's Vocab</button>
+        <span id="sep-line" style="color:#666; margin: 0 5px;">|</span>
+        <button id="btn-gl" class="toggle-btn btn-gl" onclick="showLegal('https://www.epo.org/en/legal/guidelines-epc/2025/index.html', 'Guidelines')">GL ▴</button>
+        <button id="btn-cl" class="toggle-btn btn-cl" onclick="showLegal('https://www.epo.org/en/legal/case-law/2025/index.html', 'Case Law')">Case Law ▴</button>
+        <button id="btn-epc" class="toggle-btn btn-epc" onclick="showLegal('https://www.epo.org/en/legal/epc/2020/convention.html', 'EPC')">EPC ▴</button>
+    </div>
+
     <script>
         let masterList, todayList, pinnedItems = [];
         let currentMetaLang = 'en';
