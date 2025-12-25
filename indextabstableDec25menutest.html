@@ -94,6 +94,22 @@
         .list-table th, .list-table td { padding: 12px; border-bottom: 1px solid rgba(128,128,128,0.1); text-align: left; font-size: 13px; }
         #main-list.hide-en .col-en, #main-list.hide-de .col-de, #main-list.hide-fr .col-fr, #main-list.hide-cat .col-cat { display: none !important; }
 
+             /* Modified Pane Controls for Accordion effect */
+        .pane-controls { 
+            position: fixed; bottom: 20px; left: 20px; z-index: 3000; display: flex;
+            gap: 10px; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 12px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid var(--border-color); 
+            align-items: center;
+            transition: left 0.3s ease-in-out, width 0.3s ease-in-out, padding 0.3s ease-in-out;
+            width: auto;
+            max-width: 800px;
+            overflow: hidden;
+        }
+        .pane-controls.collapsed {
+            width: 85px; /* Large enough for just the Menu button */
+            padding: 10px 5px;
+        }
+
         .pane-controls { position: fixed; bottom: 20px; left: 20px; z-index: 3000; display: flex; gap: 10px; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--border-color); align-items: center; transition: left 0.3s ease-in-out; }
         .pane-controls.shifted { left: 400px; }
         
