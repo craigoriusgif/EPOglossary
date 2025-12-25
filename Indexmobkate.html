@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>EPOS - Integrated</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --today-bg: #2d3436;
+            --today-text: #dfe6e9;
+            --border-color: #e4e6eb;
+            --accent-blue: #0066cc;
+            --accent-green: #28a745;
+            --text-main: #1c1e21;
+        }
+
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0; padding: 0; background-color: var(--primary-bg); 
+            color: var(--text-main); height: 100vh; overflow: hidden;
+            padding-top: env(safe-area-inset-top);
+        }
+
+        #app-wrapper { display: flex; height: 100vh; width: 100vw; position: relative; padding-bottom: env(safe-area-inset-bottom); }
+        
+        #main-section { flex: 2; padding: 15px; overflow: hidden; background: var(--primary-bg); border-right: 1px solid var(--border-color); position: relative; display: flex; flex-direction: column; min-width: 0; }
+
+        /* Hidden States */
+        .hidden { display: none !important; }
+
+        /* Column Toggling logic from Index37 */
+        #main-list-view.hide-en .col-en, 
+        #main-list-view.hide-de .col-de, 
+        #main-list-view.hide-fr .col-fr, 
+        #main-list-view.hide-cat .col-cat { display: none !important; }
+
+        /* Card View Styles */
+        #card-view-container { display: none; flex-direction: column; align-items: center; justify-content: center; flex-grow: 1; padding: 20px; }
+        .vocabulary-card { background: white; width: 100%; max-width: 400px; min-height: 250px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; position: relative; cursor: pointer; transition: transform 0.3s; border: 1px solid #eee; }
+        .card-term { font-size: 24px; font-weight: bold; color: var(--accent-blue); margin-bottom: 15px; }
+        .card-translation { font-size: 18px; color: #555; display: none; white-space: pre-line; }
+        .card-category { position: absolute; top: 15px; right: 20px; font-size: 10px; color: #999; text-transform: uppercase; font-weight: bold; }
+        .card-nav { display: flex; gap: 20px; width: 100%; max-width: 400px; justify-content: center; margin-top: 20px; }
+        .card-btn { padding: 12px 25px; border-radius: 12px; border: none; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; font-weight: 600; flex: 1; }
+
+        /* Panes */
+        .side-pane { position: absolute; left: 0; top: 0; bottom: 0; width: 380px; background: white; z-index: 2000; box-shadow: 5px 0 15px rgba(0,0,0,0.15); transform: translateX(-100%); transition: transform 0.3s ease-in-out; padding: 25px; display: flex; flex-direction: column; border-right: 1px solid var(--border-color); }
+        .side-pane.active { transform: translateX(0); }
+        .pane-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+        /* UI Elements */
+        .header-with-logo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; gap: 8px; flex-shrink: 0; }
+        .header-center-filters { display: flex; flex-grow: 1; gap: 6px; align-items: center; }
+        
+        input[type="search"] { height: 40px; padding: 0 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; flex-grow: 1; }
+        
+        .btn-ui { height: 40px; padding: 0 12px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; color: #1c1e21; font-weight: 500; }
+        .badge-inline { background: var(--accent-blue); color: white; border-radius: 10px; padding: 1px 6px; font-size: 10px; margin-left: 4px; }
+
+        .list-table { width: 100%; border-collapse: collapse; background: white; }
+        .list-table th { background: #f9fafb; padding: 12px; border-bottom: 2px solid var(--border-color); text-align: left; font-size: 12px; cursor: pointer; }
+        .list-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 13px; }
+
+        /* Dropdowns */
+        .view-menu-container { position: relative; }
+        .view-menu { position: absolute; bottom: 50px; left: 0; background: white; border: 1px solid #d1d5db; border-radius: 10px; box-shadow: 0 -5px 15px rgba(0,0,0,0.1); display: none; padding: 5px; min-width: 160px; z-index: 3001; }
+        .view-menu-item { padding: 10px; font-size: 12px; cursor: pointer; border-radius: 6px; font-weight: 600; }
+        .view-menu-item:hover { background: #f0f2f5; }
+
+        .pane-controls { position: fixed; bottom: 20px; left: 20px; z-index: 3000; display: flex; gap: 10px; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
+        .toggle-btn { padding: 8px 14px; border-radius: 8px; border: 1px solid #ccc; cursor: pointer; font-size: 11px; font-weight: 700; background: white; }
+
+        @media only screen and (max-width: 768px) {
+            .side-pane { width: 100%; }
+            .header-center-filters { flex-wrap: wrap; }
+            .pane-controls { left: 10px; right: 10px; justify-content: space-around; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="upload-screen" style="max-width: 450px; margin: 15vh auto; padding: 40px; background: #fff; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <h1>EPOS Glossary</h1>
+        <p>Load your CSV to begin</p>
+        <div style="position:relative;">
+            <button class="btn-ui" style="width:100%; background: var(--accent-blue); color:white; height:50px;">Browse Files</button>
+            <input type="file" id="master-file-input" accept=".csv" style="position:absolute; left:0; top:0; opacity:0; width:100%; height:100%; cursor:pointer;">
+        </div>
+    </div>
+
+    <div id="app-wrapper" class="hidden">
+        <section id="main-section">
+            <div class="header-with-logo">
+                <h2 style="margin:0; font-size:18px;">Glossary</h2>
+                <div class="header-center-filters">
+                    <input type="search" id="master-search" placeholder="Search across languages...">
+                    <div class="view-menu-container">
+                        <button class="btn-ui" onclick="toggleDrop('cat-drop', event)">🏷️ <span id="cat-badge-val"></span></button>
+                        <div id="cat-drop" class="view-menu" style="bottom: auto; top: 45px; max-height: 300px; overflow-y: auto;">
+                            <div id="category-list" style="padding: 10px;"></div>
+                        </div>
+                    </div>
+                    <div class="view-menu-container">
+                        <button class="btn-ui" onclick="toggleDrop('col-drop', event)">⚙️</button>
+                        <div id="col-drop" class="view-menu" style="bottom: auto; top: 45px; padding: 10px;">
+                            <label><input type="checkbox" checked onchange="toggleCol('en', this.checked)"> English</label><br>
+                            <label><input type="checkbox" checked onchange="toggleCol('de', this.checked)"> German</label><br>
+                            <label><input type="checkbox" checked onchange="toggleCol('fr', this.checked)"> French</label><br>
+                            <label><input type="checkbox" checked onchange="toggleCol('cat', this.checked)"> Category</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="main-scroll-area" style="flex-grow:1; overflow-y:auto;">
+                <div id="main-list-view">
+                    <table class="list-table">
+                        <thead>
+                            <tr>
+                                <th class="sort col-en" data-sort="en">English</th>
+                                <th class="sort col-de" data-sort="de">German</th>
+                                <th class="sort col-fr" data-sort="fr">French</th>
+                                <th class="sort col-cat" data-sort="cat">Category</th>
+                            </tr>
+                        </thead>
+                        <tbody class="list"></tbody>
+                    </table>
+                </div>
+
+                <div id="card-view-container">
+                    <div class="vocabulary-card" onclick="flipCard()">
+                        <div id="card-cat-label" class="card-category">CATEGORY</div>
+                        <div id="card-term-text" class="card-term">Term</div>
+                        <div id="card-trans-text" class="card-translation">Translation</div>
+                    </div>
+                    <div class="card-nav">
+                        <button class="card-btn" onclick="prevCard()">← Prev</button>
+                        <button class="card-btn" onclick="nextCard()">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="pane-controls">
+            <div class="view-menu-container">
+                <button class="toggle-btn" onclick="toggleDrop('view-menu-gl', event)">View Mode</button>
+                <div id="view-menu-gl" class="view-menu">
+                    <div class="view-menu-item" onclick="setView('list')">📄 Table View</div>
+                    <div class="view-menu-item" onclick="setView('card')">🎴 Card View</div>
+                </div>
+            </div>
+            <button class="toggle-btn" onclick="location.reload()">↻ New File</button>
+        </div>
+    </div>
+
+    <script>
+        let masterList;
+        let cardItems = [];
+        let currentCardIndex = 0;
+        let activeCategories = new Set();
+
+        // 1. File Upload & Initialization
+        document.getElementById('master-file-input').onchange = (e) => {
+            Papa.parse(e.target.files[0], {
+                header: true,
+                skipEmptyLines: true,
+                complete: (results) => {
+                    initApp(results.data);
+                    document.getElementById('upload-screen').classList.add('hidden');
+                    document.getElementById('app-wrapper').classList.remove('hidden');
+                }
+            });
+        };
+
+        function initApp(data) {
+            // Clean data keys for List.js
+            const cleanData = data.map(row => ({
+                en: row.EN || row.en || '',
+                de: row.DE || row.de || '',
+                fr: row.FR || row.fr || '',
+                cat: row.Category || row.cat || ''
+            }));
+
+            // Initialize List.js
+            masterList = new List('main-section', {
+                valueNames: ['en', 'de', 'fr', 'cat'],
+                item: `<tr><td class="en col-en"></td><td class="de col-de"></td><td class="fr col-fr"></td><td class="cat col-cat"></td></tr>`
+            }, cleanData);
+
+            cardItems = cleanData;
+
+            // Generate Categories (from Index37 logic)
+            const cats = [...new Set(cleanData.map(i => i.cat))].filter(Boolean).sort();
+            const catContainer = document.getElementById('category-list');
+            catContainer.innerHTML = '';
+            cats.forEach(c => {
+                const div = document.createElement('div');
+                div.innerHTML = `<label><input type="checkbox" value="${c}" onchange="filterByCategory()"> ${c}</label>`;
+                catContainer.appendChild(div);
+            });
+        }
+
+        // 2. Index37: Column Toggling Logic
+        function toggleCol(col, show) {
+            document.getElementById('main-list-view').classList.toggle(`hide-${col}`, !show);
+        }
+
+        // 3. Index37: Category Filtering Logic
+        function filterByCategory() {
+            const checked = Array.from(document.querySelectorAll('#category-list input:checked')).map(i => i.value);
+            document.getElementById('cat-badge-val').innerText = checked.length ? `(${checked.length})` : '';
+            
+            masterList.filter(item => {
+                return checked.length === 0 || checked.includes(item.values().cat);
+            });
+            
+            // Sync current card items with filtered list
+            cardItems = masterList.visibleItems.map(i => i.values());
+            currentCardIndex = 0;
+            updateCard();
+        }
+
+        // 4. Search Logic
+        document.getElementById('master-search').oninput = function() {
+            masterList.search(this.value);
+            cardItems = masterList.visibleItems.map(i => i.values());
+            currentCardIndex = 0;
+            updateCard();
+        };
+
+        // 5. View Switching (Table vs Card)
+        function setView(type) {
+            const listView = document.getElementById('main-list-view');
+            const cardView = document.getElementById('card-view-container');
+            if (type === 'card') {
+                listView.style.display = 'none';
+                cardView.style.display = 'flex';
+                updateCard();
+            } else {
+                listView.style.display = 'block';
+                cardView.style.display = 'none';
+            }
+        }
+
+        // 6. Card Navigation & Display
+        function updateCard() {
+            if (!cardItems.length) return;
+            const item = cardItems[currentCardIndex];
+            document.getElementById('card-term-text').innerText = item.en;
+            document.getElementById('card-trans-text').innerText = `DE: ${item.de}\nFR: ${item.fr}`;
+            document.getElementById('card-cat-label').innerText = item.cat || 'General';
+            
+            // Reset visibility
+            document.getElementById('card-term-text').style.display = 'block';
+            document.getElementById('card-trans-text').style.display = 'none';
+        }
+
+        function flipCard() {
+            const term = document.getElementById('card-term-text');
+            const trans = document.getElementById('card-trans-text');
+            const isTermVisible = term.style.display !== 'none';
+            term.style.display = isTermVisible ? 'none' : 'block';
+            trans.style.display = isTermVisible ? 'block' : 'none';
+        }
+
+        function nextCard() { currentCardIndex = (currentCardIndex + 1) % cardItems.length; updateCard(); }
+        function prevCard() { currentCardIndex = (currentCardIndex - 1 + cardItems.length) % cardItems.length; updateCard(); }
+
+        // UI Helpers
+        function toggleDrop(id, event) {
+            event.stopPropagation();
+            const el = document.getElementById(id);
+            const isVis = el.style.display === 'block';
+            document.querySelectorAll('.view-menu').forEach(d => d.style.display = 'none');
+            el.style.display = isVis ? 'none' : 'block';
+        }
+
+        document.onclick = () => document.querySelectorAll('.view-menu').forEach(m => m.style.display = 'none');
+    </script>
+</body>
+</html>
