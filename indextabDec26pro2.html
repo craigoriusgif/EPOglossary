@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EPOS</title>
+    <link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js');
+    });
+  }
+</script>
+    
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
+
+    <style>
+        :root {
+            --primary-bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --today-bg: #2d3436;
+            --today-text: #dfe6e9;
+            --border-color: #e4e6eb;
+            --accent-blue: #0066cc;
+            --accent-green: #28a745;
+            --accent-red: #dc3545;
+            --text-main: #1c1e21;
+        }
+
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin: 0; padding: 0; background-color: var(--primary-bg);
+        color: var(--text-main); height: 100vh; overflow: hidden; }
+
+        #app-wrapper { display: flex; height: 100vh; width: 100vw; position: relative; }
+        
+        /* Main Section (Glossary) */
+        #main-section { flex: 2; padding: 15px; overflow: hidden;
+        background: var(--primary-bg); border-right: 1px solid var(--border-color); position: relative; display: flex; flex-direction: column; min-width: 0;
+        }
+        
+        /* Today Section */
+        #today-section { flex: 1.2; padding: 15px; overflow: hidden; background: var(--today-bg); color: var(--today-text);
+        display: flex; flex-direction: column; transition: all 0.3s ease; height: 100%; position: relative; }
+
+        #today-section.theme-light { background: #ffffff !important; color: #1c1e21 !important; }
+        #today-section.theme-dark { background: #2d3436 !important; color: #dfe6e9 !important; }
+        #today-section.theme-sepia { background: #f4ecd8 !important; color: #5b4636 !important; }
+
+        .hidden { display: none !important; }
+        .full-width { flex: 1 0 100% !important; border: none !important; }
+
+        /* Side Panes */
+        .side-pane { 
+            position: absolute; left: 0; top: 0; bottom: 0; 
+            width: 380px; background: white; z-index: 2000; 
+            transform: translateX(-100%); transition: transform 0.3s ease-in-out;
+            padding: 25px; display: flex; flex-direction: column;
+            border-right: 1px solid var(--border-color); color: var(--text-main);
+        }
+        .side-pane.active { transform: translateX(0); }
+        .pane-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+        border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .close-pane-btn { background: #f3f4f6; border: none; font-size: 24px; cursor: pointer; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; }
+
+        /* Headers & Inputs */
+        .header-with-logo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
+        border-bottom: 1px solid var(--border-color); padding-bottom: 15px; gap: 8px; flex-shrink: 0; min-width: 0; }
+        .header-center-filters { display: flex; flex-grow: 1; gap: 6px; align-items: center; min-width: 0; }
+        
+        input[type="search"] { height: 40px; padding: 0 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; outline: none; min-width: 0; }
+        .btn-ui { height: 40px; padding: 0 8px; border: 1px solid #d1d5db; border-radius: 8px; background: #fff; cursor: pointer; font-size: 11px; display: flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; color: #1c1e21; font-weight: 500; }
+        .btn-download { background: var(--accent-green) !important; color: white !important; border: none !important; }
+        .badge-inline { background: var(--accent-blue); color: white; border-radius: 10px; padding: 1px 7px; font-size: 10px; margin-left: 4px; }
+
+        /* Today List Container Layout */
+        #today-list-container { display: flex; flex-direction: column; overflow: hidden; flex: 1; min-height: 0; }
+        .today-sticky-header { flex-shrink: 0; padding-bottom: 10px; background: inherit; z-index: 10; }
+        #today-scroll-area { overflow-y: auto; flex: 1; min-height: 0; }
+
+        /* Table Styles */
+        .list-table { width: 100%; border-collapse: collapse; background: white; table-layout: fixed; }
+        #today-section .list-table { background: transparent; color: inherit; }
+        .list-table th, .list-table td { padding: 12px; border-bottom: 1px solid rgba(128,128,128,0.1); text-align: left; font-size: 13px; overflow-wrap: break-word; }
+        
+        /* Ensure table rows in flex mode (if used) or standard mode align */
+        /* For Today view, we use standard table layout to ensure columns align with headers */
+        #today-body tr { display: table-row; }
+        #today-body td { display: table-cell; }
+
+        /* Column Visibility */
+        #main-list.hide-en .col-en, #main-list.hide-de .col-de, #main-list.hide-fr .col-fr, #main-list.hide-cat .col-cat { display: none !important; }
+
+        /* Drag & Drop Headers */
+        .list-table th { position: relative; user-select: none; }
+        .draggable-th { cursor: grab; }
+        .draggable-th:active { cursor: grabbing; }
+        .draggable-th.drag-over { border-left: 2px solid var(--accent-blue); }
+        .th-content { display: flex; align-items: center; gap: 5px; }
+        .drag-handle { color: #999; cursor: grab; font-size: 14px; opacity: 0.5; }
+        .drag-handle:hover { opacity: 1; }
+        .pin-btn { cursor: pointer; opacity: 0.3; font-size: 12px; margin-left: auto; }
+        .pin-btn.pinned { opacity: 1; color: var(--accent-blue); }
+
+        /* Floating Menu Bar */
+        .pane-controls { position: fixed; bottom: 20px; left: 20px; z-index: 3000; display: flex;
+        gap: 10px; background: rgba(255,255,255,0.95); padding: 10px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--border-color); align-items: center;
+        transition: left 0.3s ease-in-out, width 0.3s ease-in-out, padding 0.3s ease-in-out;
+        width: auto; max-width: 95vw; overflow-x: auto; flex-wrap: nowrap; white-space: nowrap; }
+        
+        .pane-controls.shifted { left: 400px; }
+        .pane-controls.collapsed { width: 90px; padding: 10px 5px; overflow: hidden; }
+
+        .toggle-btn { padding: 8px 14px; border-radius: 8px; border: 1px solid #ccc; cursor: pointer; font-size: 11px; font-weight: 700; background: white; flex-shrink: 0; }
+        .toggle-btn.active { box-shadow: inset 0 3px 5px rgba(0,0,0,0.2); background: #eee; border-color: #bbb; }
+        .btn-gl { background: #7f8c8d !important; color: white !important; }
+        .btn-cl { background: #2d3436 !important; color: white !important; }
+        .btn-epc { background: #c0392b !important; color: white !important; }
+        
+        .theme-circle { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #999; cursor: pointer; flex-shrink: 0; }
+
+        /* Mobile specific */
+        @media only screen and (max-width: 768px) {
+            #btn-gl, #btn-cl, #btn-epc, .pane-controls span { display: none !important; }
+        }
+
+        /* Patent Info & Flashcards */
+        #patent-info-wrapper { flex-shrink: 0; }
+        #flashcard-ui { flex-shrink: 0; margin-bottom: 10px; }
+        .flash-lang-sel { background: rgba(0,0,0,0.2); color: inherit; border: 1px solid rgba(128,128,128,0.5); font-size: 10px; border-radius: 4px; padding: 2px; }
+        
+        /* Legal Overlay */
+        #legal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5000; background: white; display: flex; flex-direction: column; }
+        #legal-header { height: 50px; background: #f0f2f5; border-bottom: 1px solid #ccc; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        #legal-frame { flex: 1; border: none; width: 100%; }
+
+        /* Drag area */
+        #drop-area { border: 2px dashed rgba(128,128,128,0.5); padding: 20px; text-align: center; cursor: pointer; border-radius: 8px; margin-bottom: 20px; }
+        #drop-area.drag-over { border-color: var(--accent-blue) !important; background: rgba(0, 102, 204, 0.1) !important; }
+        
+        .recent-item { padding: 12px; border: 1px solid #eee; margin-bottom: 8px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; }
+        .recent-item:hover { background: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+    <div id="legal-overlay" class="hidden">
+        <div id="legal-header">
+            <h3 id="legal-title" style="margin:0;">Legal Resource</h3>
+            <button onclick="closeLegal()" class="btn-ui" style="background: var(--accent-red); color: white; border: none;">Close ✕</button>
+        </div>
+        <iframe id="legal-frame" referrerpolicy="no-referrer"></iframe>
+    </div>
+
+    <div id="help-pane" class="side-pane">
+        <div class="pane-header"><h2>Help</h2><button class="close-pane-btn" onclick="togglePane('help-pane', false)">&times;</button></div>
+        <div style="font-size: 14px; line-height: 1.6; overflow-y: auto;">
+             <p><strong>👀 Views:</strong> Switch between <strong>EPO Glossary</strong> view and <strong>Today</strong> view.</p>
+            <p><strong>Today's Vocab</strong> is where you add your vocab list for a specific OP.</p>
+             <p><strong>▥ Columns:</strong> Drag headers to reorder.</p>
+        </div>
+    </div>
+
+    <div id="landing-help-pane" class="side-pane">
+        <div class="pane-header"><h2>Getting Started</h2><button class="close-pane-btn" onclick="togglePane('landing-help-pane', false)">&times;</button></div>
+        <div style="font-size: 14px; line-height: 1.6; overflow-y: auto;">
+            <p><strong>Welcome to EPOS!</strong></p>
+            <div style="margin: 15px 0; padding: 15px; border: 1px solid var(--accent-blue); border-radius: 8px; background: rgba(0, 102, 204, 0.05);">
+                <h4 style="margin-top:0;">🚀 Loading the EPO Glossary</h4>
+                <ol>
+                    <li>Tap the blue <strong>Load EPO Glossary</strong> button.</li>
+                    <li>Open your CSV file.</li>
+                 </ol>
+            </div>
+        </div>
+    </div>
+
+    <div id="details-pane" class="side-pane">
+        <div class="pane-header"><h2 id="det-en" style="color:var(--accent-blue); margin:0;">Term</h2><button class="close-pane-btn" onclick="togglePane('details-pane', false)">&times;</button></div>
+        <div id="details-content">
+            <div style="margin-bottom:20px;"><h4>Definition</h4><p id="det-def" style="font-style: italic; color: #555;">-</p></div>
+            <div style="margin-bottom:20px;"><h4>German (DE)</h4><p id="det-de">-</p></div>
+            <div style="margin-bottom:20px;"><h4>French (FR)</h4><p id="det-fr">-</p></div>
+            <div style="margin-bottom:20px;"><h4>Category</h4><p id="det-cat">-</p></div>
+        </div>
+    </div>
+
+    <div id="upload-screen" style="max-width: 450px; margin: 10vh auto; padding: 40px; background: #fff; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <h1 style="margin-bottom:30px;">EPOS</h1>
+        <div style="position:relative; margin-bottom: 20px;">
+            <button class="btn-ui" style="width:100%; background: var(--accent-blue); color:white; height:50px; font-size:14px;">Load EPO Glossary</button>
+            <input type="file" id="master-file-input" accept=".csv" style="position:absolute; left:0; top:0; opacity:0; width:100%; height:100%; cursor:pointer;">
+        </div>
+        <button class="btn-ui" style="width:100%; margin-bottom:20px; border: 1px solid var(--accent-blue); color: var(--accent-blue);" onclick="togglePane('landing-help-pane', true)">New here❓ Read this first</button>
+        <div id="recent-container" class="recent-list hidden">
+            <h4 style="margin-bottom: 10px; color: #666; border-bottom: 1px solid #eee; padding-bottom: 5px;">Recently Used</h4>
+            <div id="recent-items"></div>
+        </div>
+    </div>
+
+    <div id="app-wrapper" class="hidden">
+        <section id="main-section">
+            <div class="header-with-logo">
+                <h2 id="main-title" style="margin:0; font-size:18px;">Glossary</h2>
+                <div class="header-center-filters">
+                    <input type="search" id="master-search" placeholder="Search..." style="flex:2;" onsearch="masterList.search(this.value, ['en', 'de', 'fr'])">
+                    <div class="dropdown-container" style="position:relative;">
+                        <button class="btn-ui" onclick="toggleDrop('cat-drop', event)">🏷️ <span id="cat-badge-val" class="badge-inline hidden">0</span></button>
+                        <div id="cat-drop" class="dropdown-options" style="position: absolute; top: 45px; background: white; border: 1px solid #d1d5db; z-index: 1000; max-height: 350px; width: 220px; overflow-y: auto; border-radius: 10px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); display: none; padding: 10px;">
+                            <div id="master-cat-list"></div>
+                             <div style="margin-top:10px; border-top:1px solid #eee; padding-top:5px;"><button class="btn-ui" style="width:100%" onclick="resetCategories()">Reset</button></div>
+                        </div>
+                    </div>
+                    <button class="btn-ui" onclick="location.reload()">🔄</button> 
+                    <button class="btn-ui" onclick="togglePane('help-pane', true)">❓</button> 
+                </div> 
+            </div> 
+
+            <div id="main-scroll-area" style="flex-grow:1; overflow-y:auto;"> 
+                <div id="main-list"> 
+                    <table class="list-table"> 
+                        <thead id="master-head-row"></thead> 
+                        <tbody class="list"></tbody> 
+                    </table> 
+                </div> 
+            </div> 
+        </section> 
+        
+        <section id="today-section" class="theme-dark"> 
+            <div id="patent-info-wrapper"> 
+                <div style="display:flex; gap:5px; margin-bottom:10px;"> 
+                    <select id="header-select" style="height:30px; font-size:11px; flex:1; background:rgba(0,0,0,0.3); color:inherit; border:1px solid #666; border-radius:4px;"></select> 
+                    <button onclick="addMetaRow()" class="btn-ui" style="height:30px; width:30px; padding:0; background:rgba(255,255,255,0.1); color:inherit;">+</button> 
+                    <div style="display:flex; border:1px solid #555; border-radius:4px; overflow:hidden;"> 
+                        <button class="lang-toggle-btn active" onclick="setMetaLang('en')" style="padding:0 8px; font-size:10px; cursor:pointer;">EN</button> 
+                        <button class="lang-toggle-btn" onclick="setMetaLang('de')" style="padding:0 8px; font-size:10px; cursor:pointer;">DE</button> 
+                        <button class="lang-toggle-btn" onclick="setMetaLang('fr')" style="padding:0 8px; font-size:10px; cursor:pointer;">FR</button> 
+                    </div> 
+                </div> 
+                <div id="patent-table-content" class="today-header-container"> 
+                    <table class="patent-info-table" id="meta-table-body"></table> 
+                </div> 
+            </div> 
+
+            <div id="flashcard-ui" class="hidden">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <span style="font-size:12px; font-weight:bold;">Study:</span>
+                        <select id="flash-source-lang" class="flash-lang-sel" onchange="resetFlashcards()">
+                            <option value="en" selected>EN</option>
+                            <option value="de">DE</option>
+                            <option value="fr">FR</option>
+                        </select>
+                        <span id="flash-count" style="font-size:10px; margin-left:8px; opacity:0.7;"></span>
+                    </div>
+                    <button onclick="toggleFlashcards()" class="btn-ui" style="height:25px; padding:0 10px; font-size:10px; background:rgba(255,255,255,0.1); color:inherit;">Close ×</button>
+                </div>
+                <div id="flashcard-container" onclick="flipFlashcard()">
+                    <div id="flashcard-lang">---</div>
+                    <div id="flashcard-content">No terms loaded</div>
+                    <div style="position:absolute; bottom:10px; left:0; right:0; font-size:10px; opacity:0.5;">Click to Flip</div>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button onclick="prevFlashcard()" class="btn-ui" style="flex:1; background:rgba(255,255,255,0.1); color:inherit;">Prev</button>
+                    <button onclick="markFlashcardDone()" class="btn-ui" style="flex:1.5; background:var(--accent-green); color:white; border:none;">Mark Done ✅</button>
+                    <button onclick="nextFlashcard()" class="btn-ui" style="flex:1; background:var(--accent-blue); color:white; border:none;">Next</button>
+                </div>
+            </div>
+
+            <div id="drop-area">Drag and drop CSV or Word (.docx) file or tap to open.</div> 
+            
+            <div id="today-list-container" class="hidden"> 
+                <div class="today-sticky-header"> 
+                    <div style="display:flex; gap:8px; margin-bottom:10px;"> 
+                        <input type="search" id="today-search" style="flex:1; padding:10px; border-radius:6px; background:rgba(255,255,255,0.1); color:inherit; border:1px solid rgba(128,128,128,0.3);" placeholder="Filter..." onsearch="todayList.search(this.value)"> 
+                        <button onclick="toggleInlineAdd()" class="btn-ui" id="btn-toggle-add" style="background:var(--accent-blue); color:white; border:none;">[+] Add</button> 
+                        <button onclick="downloadToday()" class="btn-ui btn-download">📥</button> 
+                    </div> 
+                    <div id="inline-add-header" class="inline-add-container hidden" style="margin-bottom:10px;"> 
+                         <input type="text" id="new-en" placeholder="EN"> 
+                         <input type="text" id="new-de" placeholder="DE"> 
+                         <input type="text" id="new-fr" placeholder="FR"> 
+                         <button onclick="addNewTermInline()" class="btn-ui" style="background:var(--accent-blue); color:white; border:none;">OK</button> 
+                    </div>
+                    <div id="today-pinned-area" class="hidden"><table class="list-table"><tbody id="pinned-body"></tbody></table></div> 
+                </div> 
+    
+                <div id="today-scroll-area"> 
+                    <table class="list-table">
+                        <thead id="today-head-row"></thead>
+                        <tbody id="today-body" class="list"></tbody> 
+                    </table> 
+                </div> 
+            </div> 
+        </section> 
+    </div>
+
+    <div class="pane-controls hidden" id="bottom-controls">
+        <button id="btn-hide-menu" class="toggle-btn" style="background: #f0f2f5; font-size:16px; width:40px; justify-content:center;" onclick="toggleMenu(true)">◂</button>
+        <button id="btn-expand-menu" class="toggle-btn hidden" style="background: var(--accent-blue); color: white; border: none;" onclick="toggleMenu(false)">Menu ☰</button>
+        
+        <button id="nav-btn-master" class="toggle-btn" onclick="setLayout('master')">EPO Glossary</button>
+        <span id="sep-line-1" style="color:#666; margin: 0 5px;">|</span>
+        <button id="nav-btn-today" class="toggle-btn" onclick="setLayout('today')">Today’s vocab</button>
+        
+        <button id="flashcard-btn-float" class="toggle-btn hidden" onclick="toggleFlashcards()" style="background:var(--accent-blue); color:white; border:none;">🎴 Cards</button>
+        <button id="btn-patent-info" class="toggle-btn" onclick="togglePatentInfoBtn()">Patent Info</button>
+
+        <span id="sep-line-2" style="color:#666; margin: 0 5px;">|</span>
+        
+        <div id="theme-toggles" style="display:flex; gap:5px; margin: 0 10px;">
+             <div class="theme-circle" style="background:#fff;" onclick="setTheme('light')" title="Light"></div>
+             <div class="theme-circle" style="background:#2d3436;" onclick="setTheme('dark')" title="Dark"></div>
+             <div class="theme-circle" style="background:#f4ecd8;" onclick="setTheme('sepia')" title="Sepia"></div>
+        </div>
+        
+        <button id="btn-gl" class="toggle-btn btn-gl" onclick="showLegal('https://www.epo.org/en/legal/guidelines-epc/2025/index.html', 'Guidelines')">GL</button>
+        <button id="btn-cl" class="toggle-btn btn-cl" onclick="showLegal('https://www.epo.org/en/legal/case-law/2025/index.html', 'Case Law')">Case Law</button>
+        <button id="btn-epc" class="toggle-btn btn-epc" onclick="showLegal('https://www.epo.org/en/legal/epc/2020/convention.html', 'EPC')">EPC</button>
+    </div>
+
+    <script>
+        let masterList, todayList, pinnedItems = [];
+        let currentMetaLang = 'en';
+        let flashcardIndex = 0;
+        let isFlashcardFlipped = false;
+        let activeFlashcards = [];
+        let previousLayout = 'master'; 
+        
+        let masterCols = [
+            { id: 'en', label: 'English', cls: 'col-en' },
+            { id: 'de', label: 'German', cls: 'col-de' },
+            { id: 'fr', label: 'French', cls: 'col-fr' },
+            { id: 'cat', label: 'Category', cls: 'col-cat' }
+        ];
+        
+        let todayCols = [
+            { id: 'en', label: 'English', cls: 'en' },
+            { id: 'de', label: 'German', cls: 'de' },
+            { id: 'fr', label: 'French', cls: 'fr' }
+        ];
+
+        const headerTranslations = {
+            pat: { en: "Patent Number", de: "Patentnummer", fr: "Numéro de brevet" },
+            app: { en: "Application Number", de: "Anmeldenummer", fr: "Numéro de dépôt" },
+            tit: { en: "Title", de: "Titel", fr: "Titre" },
+            pri: { en: "Priority date", de: "Prioritätstag", fr: "Date de priorité" },
+            pro: { en: "Proprietor", de: "Patentinhaber", fr: "Titulaire" },
+            opp: { en: "Opponent", de: "Einsprechender", fr: "Opposant(e)" },
+            res: { en: "Respondent", de: "Beschwerdegegner", fr: "Intimé(e)" },
+            apl: { en: "Appellant", de: "Beschwerdeführer", fr: "Requérant(e)" }
+        };
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('glossary_history') || '[]');
+            const container = document.getElementById('recent-container');
+            const itemsDiv = document.getElementById('recent-items');
+            if (history.length > 0) {
+                container.classList.remove('hidden');
+                itemsDiv.innerHTML = '';
+                history.forEach((item) => {
+                    const div = document.createElement('div');
+                    div.className = 'recent-item';
+                    div.innerHTML = `<span>📄 ${item.name}</span><span style="font-size:11px; color:#999;">${item.date}</span>`;
+                    div.onclick = () => launchApp(item.data);
+                    itemsDiv.appendChild(div);
+                });
+            }
+        }
+
+        function saveToHistory(name, data) {
+            let history = JSON.parse(localStorage.getItem('glossary_history') || '[]');
+            const newItem = { name, data, date: new Date().toLocaleDateString() };
+            history = [newItem, ...history.filter(h => h.name !== name)].slice(0, 5);
+            localStorage.setItem('glossary_history', JSON.stringify(history));
+        }
+
+        function togglePane(id, show) { 
+            document.getElementById(id).classList.toggle('active', show);
+            const isAnyPaneActive = document.getElementById('help-pane').classList.contains('active') || document.getElementById('details-pane').classList.contains('active');
+            document.querySelector('.pane-controls').classList.toggle('shifted', isAnyPaneActive);
+        }
+        
+        function linkify(text) { return text.replace(/(https?:\/\/[^\s]+)/g, (url) => `<a href="${url}" target=\"_blank\">${url}</a>`); }
+
+        function openRowDetails(values) {
+            document.getElementById('det-en').textContent = values.en;
+            document.getElementById('det-de').textContent = values.de || '-';
+            document.getElementById('det-fr').textContent = values.fr || '-';
+            document.getElementById('det-cat').textContent = values.category || '-';
+            document.getElementById('det-def').innerHTML = values.definition ? linkify(values.definition) : 'No definition available.';
+            togglePane('details-pane', true);
+        }
+
+        function populateHeaderSelect() {
+            const sel = document.getElementById('header-select');
+            sel.innerHTML = '';
+            Object.keys(headerTranslations).forEach(k => {
+                const opt = document.createElement('option');
+                opt.value = k; opt.textContent = headerTranslations[k][currentMetaLang]; sel.appendChild(opt);
+            });
+        }
+
+        function setMetaLang(lang) {
+            currentMetaLang = lang;
+            document.querySelectorAll('.lang-toggle-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === lang));
+            populateHeaderSelect();
+            document.querySelectorAll('#meta-table-body tr').forEach(tr => {
+                const type = tr.dataset.type; const num = tr.dataset.num || '';
+                tr.querySelector('.info-label').textContent = headerTranslations[type][lang] + (num ? ' ' + num : '');
+            });
+        }
+
+        function addMetaRow(type = null, value = '') {
+            if (!type) type = document.getElementById('header-select').value;
+            const table = document.getElementById('meta-table-body');
+            let num = ''; if(['opp', 'res', 'apl'].includes(type)) num = table.querySelectorAll(`tr[data-type="${type}"]`).length + 1;
+            const tr = document.createElement('tr');
+            tr.dataset.type = type; tr.dataset.num = num;
+            tr.innerHTML = `<td class="info-label">${headerTranslations[type][currentMetaLang]} ${num}</td><td><input class="input-inline-edit" value="${value}" placeholder="..."></td><td style="width:20px;"><button onclick="this.parentElement.parentElement.remove()" style="color:red; background:none; border:none; cursor:pointer;">×</button></td>`;
+            table.appendChild(tr);
+        }
+
+        function togglePatentInfoBtn() {
+            const wrapper = document.getElementById('patent-info-wrapper');
+            if (document.getElementById('main-section').classList.contains('hidden')) {
+                wrapper.classList.toggle('hidden');
+            } else {
+                setLayout('today');
+                wrapper.classList.remove('hidden');
+            }
+        }
+
+        document.getElementById('master-file-input').onchange = (e) => {
+            const file = e.target.files[0];
+            Papa.parse(file, { header: true, skipEmptyLines: true, complete: (r) => {
+                const clean = r.data.map(row => ({
+                    en: row.EN || row.en || '', de: row.DE || row.de || '', fr: row.FR || row.fr || '',
+                    definition: row.Definition || row.definition || '',
+                    category: (row.Category || row.category || '').replace(/[\[\]"]/g, '').split(',').map(s => s.trim()).filter(s => s).join(', ')
+                }));
+                saveToHistory(file.name, clean); launchApp(clean);
+            }});
+        };
+
+        function renderHeaders(type) {
+            const isMaster = type === 'master';
+            const cols = isMaster ? masterCols : todayCols;
+            const container = document.getElementById(isMaster ? 'master-head-row' : 'today-head-row');
+            container.innerHTML = '';
+            const tr = document.createElement('tr');
+            cols.forEach((col, index) => {
+                const th = document.createElement('th');
+                th.className = `draggable-th ${col.cls || col.id}`;
+                th.draggable = !col.pinned;
+                th.innerHTML = `<div class="th-content"><span class="drag-handle">⋮</span>${col.label}<span class="pin-btn ${col.pinned ? 'pinned' : ''}" onclick="togglePinCol('${type}', ${index})">📌</span></div>`;
+                if (!col.pinned) {
+                    th.ondragstart = (e) => { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', JSON.stringify({type, index})); th.classList.add('dragging'); };
+                    th.ondragend = () => th.classList.remove('dragging');
+                }
+                th.ondragover = (e) => { e.preventDefault(); if(!col.pinned) th.classList.add('drag-over'); };
+                th.ondragleave = () => th.classList.remove('drag-over');
+                th.ondrop = (e) => { e.preventDefault(); th.classList.remove('drag-over'); const data = JSON.parse(e.dataTransfer.getData('text/plain')); if (data.type === type && data.index !== index && !col.pinned) { moveColumn(type, data.index, index); } };
+                tr.appendChild(th);
+            });
+            container.appendChild(tr);
+        }
+
+        function togglePinCol(type, index) {
+            const cols = type === 'master' ? masterCols : todayCols;
+            cols[index].pinned = !cols[index].pinned;
+            renderHeaders(type);
+        }
+
+        function moveColumn(type, fromIndex, toIndex) {
+            const cols = type === 'master' ? masterCols : todayCols;
+            const item = cols.splice(fromIndex, 1)[0];
+            cols.splice(toIndex, 0, item);
+            renderHeaders(type);
+            reorderRows(type);
+        }
+
+        function reorderRows(type) {
+            const isMaster = type === 'master';
+            const cols = isMaster ? masterCols : todayCols;
+            const tbody = document.querySelector(isMaster ? '#main-list .list' : '#today-body');
+            Array.from(tbody.children).forEach(tr => {
+                const cells = Array.from(tr.children);
+                cells.forEach(c => c.remove());
+                cols.forEach(col => {
+                    let targetClass = col.id;
+                    if(type === 'master' && col.id === 'cat') targetClass = 'category';
+                    const cell = cells.find(c => c.classList.contains(targetClass));
+                    if(cell) tr.appendChild(cell);
+                });
+            });
+        }
+
+        function launchApp(data) {
+            document.getElementById('upload-screen').classList.add('hidden');
+            document.getElementById('app-wrapper').classList.remove('hidden');
+            document.querySelector('.pane-controls').classList.remove('hidden');
+            renderHeaders('master');
+            masterList = new List('main-section', { 
+                valueNames: ['en', 'de', 'fr', 'category', 'definition'], 
+                item: `<tr class="master-row"><td class="en col-en"></td><td class="de col-de"></td><td class="fr col-fr"></td><td class="category col-cat"></td></tr>` 
+            }, data);
+            masterList.on('updated', () => reorderRows('master'));
+            masterList.items.forEach(item => {
+                const v = item.values(); if (v.definition && v.definition.trim()) item.elm.querySelector('.en').innerHTML += '💡';
+                item.elm.onclick = () => openRowDetails(v);
+            });
+            const cats = [...new Set(data.flatMap(i => i.category.split(',').map(s => s.trim())))].filter(s => s).sort();
+            const filterEl = document.getElementById('master-cat-list'); filterEl.innerHTML = '';
+            cats.forEach(c => {
+                const label = document.createElement('label'); label.style.display = 'block'; label.innerHTML = `<input type="checkbox" value="${c}" class="cat-chk"> ${c}`;
+                label.querySelector('input').onchange = updateFilters; filterEl.appendChild(label);
+            });
+            setLayout('master');
+        }
+
+        function updateFilters() {
+            const sel = Array.from(document.querySelectorAll('.cat-chk:checked')).map(i => i.value);
+            const badge = document.getElementById('cat-badge-val');
+            if(sel.length > 0) { badge.classList.remove('hidden'); badge.textContent = sel.length; 
+            } else { badge.classList.add('hidden'); }
+            masterList.filter(item => sel.length === 0 || sel.every(s => item.values().category.includes(s)));
+        }
+
+        function resetCategories() { document.querySelectorAll('.cat-chk').forEach(c => c.checked = false); updateFilters(); }
+        function toggleDrop(id, e) { e.stopPropagation(); const el = document.getElementById(id); const isVis = el.style.display === 'block'; document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none'); el.style.display = isVis ? 'none' : 'block'; }
+        
+        function downloadMaster() { const csv = Papa.unparse(masterList.items.map(i => i.values())); const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'glossary_export.csv'; a.click(); }
+
+        const dropArea = document.getElementById('drop-area');
+        dropArea.onclick = () => { let i = document.createElement('input'); i.type='file'; i.onchange=(e)=>handleToday(e.target.files[0]); i.click(); };
+        dropArea.ondragover = (e) => { e.preventDefault(); e.stopPropagation(); };
+        dropArea.ondragenter = (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.add('drag-over'); };
+        dropArea.ondragleave = (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.remove('drag-over'); };
+        dropArea.ondrop = (e) => { e.preventDefault(); e.stopPropagation(); dropArea.classList.remove('drag-over'); if (e.dataTransfer.files && e.dataTransfer.files.length > 0) handleToday(e.dataTransfer.files[0]); };
+        
+        function handleToday(file) {
+            const ext = file.name.split('.').pop().toLowerCase();
+            const mapKeys = (row) => {
+                let o = {};
+                Object.keys(row).forEach(k => { 
+                    const l = k.toLowerCase().trim(); 
+                    if(l==='en'||l==='english') o.en=row[k]; 
+                    else if(l==='de'||l==='german') o.de=row[k]; 
+                    else if(l==='fr'||l==='french') o.fr=row[k]; 
+                    else if(l==='category') o.category=row[k];
+                    else if(l==='definition') o.definition=row[k];
+                });
+                return o;
+            };
+
+            if (ext === 'csv') {
+                Papa.parse(file, { header: true, skipEmptyLines: true, complete: (r) => {
+                    const norm = r.data.map(mapKeys);
+                    processTodayData(norm);
+                }});
+            } else if (ext === 'docx') {
+                const r = new FileReader();
+                r.onload = (e) => mammoth.convertToHtml({arrayBuffer: e.target.result}).then(res => {
+                    const temp = document.createElement('div'); temp.innerHTML = res.value; const rows = Array.from(temp.querySelectorAll('tr'));
+                    if (rows.length < 1) return; 
+                    const headers = Array.from(rows[0].querySelectorAll('td')).map(td => td.innerText.trim().toLowerCase());
+                    const data = rows.slice(1).map(tr => { 
+                        let o = {}; tr.querySelectorAll('td').forEach((td, i) => { if(headers[i]) o[headers[i]] = td.innerText.trim(); }); 
+                        return mapKeys(o); 
+                    });
+                    processTodayData(data);
+                });
+                r.readAsArrayBuffer(file);
+            }
+        }
+
+        function processTodayData(data) {
+            document.getElementById('meta-table-body').innerHTML = '';
+            const vocab = [];
+            const metaMap = { "patent": "pat", "application": "app", "title": "tit", "priority": "pri", "proprietor": "pro", "opponent": "opp", "respondent": "res", "appellant": "apl" };
+            data.forEach(item => {
+                let foundMeta = false;
+                const enVal = (item.en || "").toLowerCase();
+                for (let key in metaMap) {
+                    if (enVal.includes(key)) {
+                        addMetaRow(metaMap[key], item.de || item.fr || ""); 
+                        foundMeta = true;
+                        break;
+                    }
+                }
+                if (!foundMeta && (item.en || item.de || item.fr)) vocab.push(item);
+            });
+            const currentTypes = Array.from(document.querySelectorAll('#meta-table-body tr')).map(tr => tr.dataset.type);
+            ['pat', 'app', 'tit'].forEach(t => { if(!currentTypes.includes(t)) addMetaRow(t); });
+            initToday(vocab);
+        }
+
+        function initToday(data) {
+            document.getElementById('drop-area').classList.add('hidden');
+            document.getElementById('today-list-container').classList.remove('hidden');
+            document.getElementById('flashcard-btn-float').classList.remove('hidden');
+            renderHeaders('today');
+            // Ensure data has properties for all columns to avoid undefined errors
+            const safeData = data.map(d => ({ en: d.en || '', de: d.de || '', fr: d.fr || '' }));
+            todayList = new List('today-section', { valueNames: ['en', 'de', 'fr'], item: `<tr onclick=\"togglePin(this)\" style=\"cursor:pointer;\"><td class=\"en\"></td><td class=\"de\"></td><td class=\"fr\"></td></tr>` }, safeData);
+            todayList.on('updated', () => reorderRows('today'));
+        }
+
+        function toggleInlineAdd() {
+            const header = document.getElementById('inline-add-header');
+            header.classList.toggle('hidden');
+        }
+
+        function addNewTermInline() {
+            const en = document.getElementById('new-en').value.trim(), de = document.getElementById('new-de').value.trim(), fr = document.getElementById('new-fr').value.trim();
+            if (!en) return;
+            if (!todayList) initToday([{ en, de, fr }]); else todayList.add({ en, de, fr });
+            document.getElementById('new-en').value = ''; document.getElementById('new-de').value = ''; document.getElementById('new-fr').value = '';
+            toggleInlineAdd();
+        }
+
+        function togglePin(row) {
+            const item = { en: row.querySelector('.en').textContent, de: row.querySelector('.de').textContent, fr: row.querySelector('.fr').textContent };
+            const idx = pinnedItems.findIndex(i => i.en === item.en); if (idx > -1) pinnedItems.splice(idx, 1); else pinnedItems.push(item);
+            renderPinned();
+        }
+
+        function renderPinned() {
+            const area = document.getElementById('today-pinned-area'), body = document.getElementById('pinned-body');
+            body.innerHTML = ''; area.classList.toggle('hidden', !pinnedItems.length);
+            pinnedItems.forEach(item => {
+                const tr = document.createElement('tr'); tr.style.background = 'rgba(0,102,204,0.2)';
+                tr.onclick = () => { pinnedItems = pinnedItems.filter(i => i.en !== item.en); renderPinned(); };
+                tr.innerHTML = `<td style=\"width:33%;\">📌 ${item.en}</td><td style=\"width:33%;\">${item.de}</td><td style=\"width:33%;\">${item.fr}</td>`;
+                body.appendChild(tr);
+            });
+        }
+
+        function resetFlashcards() {
+            if (!todayList || todayList.items.length === 0) return;
+            activeFlashcards = [...todayList.items.map(i => i.values())];
+            for (let i = activeFlashcards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [activeFlashcards[i], activeFlashcards[j]] = [activeFlashcards[j], activeFlashcards[i]];
+            }
+            flashcardIndex = 0;
+            showFlashcard();
+        }
+
+        function toggleFlashcards() {
+            const flashcardUI = document.getElementById('flashcard-ui');
+            const isVisible = flashcardUI.classList.contains('hidden');
+            if (isVisible) {
+                setLayout('today');
+                flashcardUI.classList.remove('hidden');
+                document.getElementById('patent-info-wrapper').classList.add('hidden');
+                resetFlashcards();
+            } else {
+                flashcardUI.classList.add('hidden');
+                document.getElementById('patent-info-wrapper').classList.remove('hidden');
+            }
+        }
+
+        function showFlashcard() {
+            const content = document.getElementById('flashcard-content');
+            const langLabel = document.getElementById('flashcard-lang');
+            const countLabel = document.getElementById('flash-count');
+            if (activeFlashcards.length === 0) { langLabel.textContent = "Finished"; content.textContent = "All terms learned!"; countLabel.textContent = "0 left"; return; }
+            const item = activeFlashcards[flashcardIndex];
+            const source = document.getElementById('flash-source-lang').value;
+            isFlashcardFlipped = false;
+            langLabel.textContent = source === 'en' ? 'English' : (source === 'de' ? 'German' : 'French');
+            content.textContent = item[source];
+            countLabel.textContent = `${activeFlashcards.length} left`;
+        }
+
+        function flipFlashcard() {
+            if (activeFlashcards.length === 0) return;
+            const item = activeFlashcards[flashcardIndex];
+            const source = document.getElementById('flash-source-lang').value;
+            const content = document.getElementById('flashcard-content');
+            const langLabel = document.getElementById('flashcard-lang');
+            isFlashcardFlipped = !isFlashcardFlipped;
+            if (isFlashcardFlipped) {
+                const targets = ['en', 'de', 'fr'].filter(l => l !== source);
+                langLabel.textContent = "Translations";
+                content.innerHTML = `${item[targets[0]]}<br><span style="font-weight:normal; font-size:14px; opacity:0.7;">${item[targets[1]]}</span>`;
+            } else { showFlashcard(); }
+        }
+
+        function markFlashcardDone() {
+            if (activeFlashcards.length === 0) return;
+            activeFlashcards.splice(flashcardIndex, 1);
+            if (flashcardIndex >= activeFlashcards.length) flashcardIndex = 0;
+            showFlashcard();
+        }
+
+        function nextFlashcard() { if (activeFlashcards.length === 0) return; flashcardIndex = (flashcardIndex + 1) % activeFlashcards.length; showFlashcard(); }
+        function prevFlashcard() { if (activeFlashcards.length === 0) return; flashcardIndex = (flashcardIndex - 1 + activeFlashcards.length) % activeFlashcards.length; showFlashcard(); }
+
+        function setLayout(mode) {
+            const m = document.getElementById('main-section'), t = document.getElementById('today-section');
+            m.classList.remove('hidden', 'full-width'); t.classList.remove('hidden', 'full-width');
+            document.querySelector('.header-with-logo').classList.remove('hidden');
+            document.getElementById('main-list').classList.remove('hidden'); 
+            document.getElementById('main-title').textContent = 'Glossary';
+            
+            document.getElementById('nav-btn-master').classList.toggle('active', mode === 'master');
+            document.getElementById('nav-btn-today').classList.toggle('active', mode === 'today');
+
+            const themeToggles = document.getElementById('theme-toggles');
+            if(mode === 'master') { 
+                t.classList.add('hidden'); m.classList.add('full-width'); 
+                previousLayout = 'master'; themeToggles.style.display = 'none';
+            }
+            if(mode === 'today') { 
+                m.classList.add('hidden'); t.classList.add('full-width');
+                previousLayout = 'today'; themeToggles.style.display = 'flex';
+                if(todayList) reorderRows('today');
+            }
+        }
+
+        function showLegal(url, title) {
+            const overlay = document.getElementById('legal-overlay');
+            const frame = document.getElementById('legal-frame');
+            document.getElementById('legal-title').textContent = title;
+            frame.src = url;
+            overlay.classList.remove('hidden');
+        }
+
+        function closeLegal() {
+            document.getElementById('legal-overlay').classList.add('hidden');
+            document.getElementById('legal-frame').src = '';
+        }
+
+        function setTheme(t) { document.getElementById('today-section').className = 'theme-' + t; }
+        
+        function downloadToday() { if (!todayList || todayList.items.length === 0) return;
+            const csv = Papa.unparse(todayList.items.map(i => i.values())); const blob = new Blob([csv], { type: 'text/csv' }); const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = 'today_glossary.csv'; a.click();
+        }
+
+        window.onload = () => { 
+            loadHistory();
+            populateHeaderSelect();
+            ['pat', 'app', 'tit'].forEach(id => addMetaRow(id)); 
+        };
+        document.onclick = () => document.querySelectorAll('.dropdown-options').forEach(d => d.style.display = 'none');
+        document.getElementById('master-search').oninput = (e) => masterList.search(e.target.value, ['en', 'de', 'fr']);
+        document.getElementById('today-search').oninput = (e) => todayList.search(e.target.value);
+        
+        function toggleMenu(collapsed) {
+            const controls = document.getElementById('bottom-controls');
+            const hideBtn = document.getElementById('btn-hide-menu');
+            const expandBtn = document.getElementById('btn-expand-menu');
+            const otherElements = controls.querySelectorAll('.toggle-btn:not(#btn-hide-menu):not(#btn-expand-menu), span, #theme-toggles');
+            if (collapsed) {
+                controls.classList.add('collapsed');
+                hideBtn.classList.add('hidden'); expandBtn.classList.remove('hidden');
+                otherElements.forEach(el => el.classList.add('hidden'));
+            } else {
+                controls.classList.remove('collapsed');
+                hideBtn.classList.remove('hidden'); expandBtn.classList.add('hidden');
+                otherElements.forEach(el => {
+                    if (el.id === 'flashcard-btn-float' && (!todayList || todayList.items.length === 0)) return; 
+                    if (el.id === 'theme-toggles' && previousLayout === 'master') return; 
+                    el.classList.remove('hidden');
+                });
+                if (previousLayout === 'today') document.getElementById('theme-toggles').style.display = 'flex';
+            }
+        }
+    </script>
+</body>
+</html>
